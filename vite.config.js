@@ -5,5 +5,3 @@ export default defineConfig({
 	base: "/",
 	plugins: [react()],
 });
-
-///gdsc-nubaliwag/
