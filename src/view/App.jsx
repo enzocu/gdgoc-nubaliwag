@@ -11,7 +11,14 @@ import ProtectedRoute from "../view/context/protectedRoute";
 import { AcadYearProvider } from "./context/acadyearContext";
 
 function App() {
-	return (
+	const isMaintenance = true;
+
+	return isMaintenance ? (
+		<div className="text-center mt-5">
+			<h1>🚧 Site Under Maintenance 🚧</h1>
+			<p>We'll be back soon!</p>
+		</div>
+	) : (
 		<TopAlertProvider>
 			<LoadingProvider>
 				<LoginModal />
