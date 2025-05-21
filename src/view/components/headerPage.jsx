@@ -13,9 +13,9 @@ import useTheme from "../../controller/customAction/useTheme";
 function HeaderPage() {
 	const location = useLocation();
 	const { theme, toggleTheme } = useTheme();
-	const isAdminRoute = location.pathname.startsWith("/gdsc-nubaliwag/admin");
+	const isAdminRoute = location.pathname.startsWith("/admin");
 
-	if (location.pathname == "/gdsc-nubaliwag/login") {
+	if (location.pathname == "/login") {
 		openModal("loginModal");
 	}
 	return (
@@ -38,7 +38,7 @@ function HeaderPage() {
 							<ul className="navbar-nav">
 								<li className="nav-item">
 									<NavLink
-										to="/gdsc-nubaliwag/"
+										to="/"
 										end
 										className={({ isActive }) => (isActive ? "active" : "")}
 									>
@@ -47,7 +47,7 @@ function HeaderPage() {
 								</li>
 								<li className="nav-item">
 									<NavLink
-										to="/gdsc-nubaliwag/user/coreteam"
+										to="/user/coreteam"
 										end
 										className={({ isActive }) => (isActive ? "active" : "")}
 									>
@@ -56,7 +56,7 @@ function HeaderPage() {
 								</li>
 								<li className="nav-item">
 									<NavLink
-										to="/gdsc-nubaliwag/user/events"
+										to="/user/events"
 										end
 										className={({ isActive }) => (isActive ? "active" : "")}
 									>
@@ -65,7 +65,7 @@ function HeaderPage() {
 								</li>
 								<li className="nav-item">
 									<NavLink
-										to="/gdsc-nubaliwag/user/projects"
+										to="/user/projects"
 										end
 										className={({ isActive }) => (isActive ? "active" : "")}
 									>
@@ -74,7 +74,7 @@ function HeaderPage() {
 								</li>
 								<li className="nav-item">
 									<NavLink
-										to="/gdsc-nubaliwag/user/contact"
+										to="/user/contact"
 										end
 										className={({ isActive }) => (isActive ? "active" : "")}
 									>

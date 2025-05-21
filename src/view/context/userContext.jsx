@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
 	const [user, setUser] = useState(null);
 	const [userDetails, setUserDetails] = useState(null);
 
-	const isAdminRoute = location.pathname.startsWith("/gdsc-nubaliwag/admin");
+	const isAdminRoute = location.pathname.startsWith("/admin");
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -34,10 +34,10 @@ export const UserProvider = ({ children }) => {
 						setUserDetails(docSnap.data());
 					} else {
 						setUserDetails({});
-						navigate("/gdsc-nubaliwag/");
+						navigate("/");
 					}
 					if (!isAdminRoute) {
-						navigate("/gdsc-nubaliwag/admin/dashboard");
+						navigate("/admin/dashboard");
 					}
 				} catch (error) {
 					setUserDetails({});

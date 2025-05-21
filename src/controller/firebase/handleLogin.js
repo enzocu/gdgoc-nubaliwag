@@ -24,7 +24,7 @@ export async function handleLogin({
 			"success",
 			`Welcome to Google Developer Student Clubs!\n\nEmail: ${user.email}`
 		);
-		navigate("/gdsc-nubaliwag/admin/dashboard");
+		navigate("/admin/dashboard");
 	} catch (error) {
 		triggerAlert("danger", error.message);
 	} finally {

@@ -92,7 +92,7 @@ function HomePage() {
 								<p>{acadYear?.ay_about || ""}</p>
 								<button
 									className="meet-members-btn"
-									onClick={() => navigate(`/gdsc-nubaliwag/user/coreteam`)}
+									onClick={() => navigate(`/user/coreteam`)}
 								>
 									Meet Our Members
 								</button>
@@ -169,7 +169,7 @@ function HomePage() {
 										</p>
 										<button
 											className="view-all-btn"
-											onClick={() => navigate(`/gdsc-nubaliwag/user/events`)}
+											onClick={() => navigate(`/user/events`)}
 										>
 											View All Events
 										</button>
@@ -204,7 +204,7 @@ function HomePage() {
 														<a
 															onClick={() =>
 																navigate(
-																	`/gdsc-nubaliwag/user/events/eventsdetails?id=${event.id}`
+																	`/user/events/eventsdetails?id=${event.id}`
 																)
 															}
 															className="learn-more-link"

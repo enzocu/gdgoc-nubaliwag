@@ -9,21 +9,21 @@ const ProtectedRoute = ({ children }) => {
 
 	useEffect(() => {
 		if (!loading && user && location.pathname === "/") {
-			navigate("/gdsc-nubaliwag/admin/dashboard", { replace: true });
+			navigate("/admin/dashboard", { replace: true });
 		}
 	}, [user, loading, navigate, location]);
 
 	const publicPaths = [
-		"/gdsc-nubaliwag/user/coreteam",
-		"/gdsc-nubaliwag/user/events",
-		"/gdsc-nubaliwag/user/projects",
-		"/gdsc-nubaliwag/user/contact",
+		"/user/coreteam",
+		"/user/events",
+		"/user/projects",
+		"/user/contact",
 
-		"/gdsc-nubaliwag/user/events/eventsdetails",
+		"/user/events/eventsdetails",
 	];
 
 	if (!user && !loading && !publicPaths.includes(location.pathname)) {
-		return <Navigate to="/gdsc-nubaliwag/" replace />;
+		return <Navigate to="/" replace />;
 	}
 
 	return children;

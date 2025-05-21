@@ -24,7 +24,7 @@ function SideBar() {
 			<ul className="side-navigation">
 				<li>
 					<NavLink
-						to="/gdsc-nubaliwag/admin/dashboard"
+						to="/admin/dashboard"
 						className={({ isActive }) => (isActive ? "active" : "")}
 					>
 						<RxDashboard /> Dashboard
@@ -32,7 +32,7 @@ function SideBar() {
 				</li>
 				<li>
 					<NavLink
-						to="/gdsc-nubaliwag/admin/events"
+						to="/admin/events"
 						className={({ isActive }) => (isActive ? "active" : "")}
 					>
 						<IoCalendarClearOutline /> Events
@@ -40,7 +40,7 @@ function SideBar() {
 				</li>
 				<li>
 					<NavLink
-						to="/gdsc-nubaliwag/admin/members"
+						to="/admin/members"
 						className={({ isActive }) => (isActive ? "active" : "")}
 					>
 						<MdOutlinePeopleAlt /> Core Members
@@ -48,7 +48,7 @@ function SideBar() {
 				</li>
 				<li>
 					<NavLink
-						to="/gdsc-nubaliwag/admin/photos"
+						to="/admin/photos"
 						className={({ isActive }) => (isActive ? "active" : "")}
 					>
 						<MdOutlineInsertPhoto /> Photos

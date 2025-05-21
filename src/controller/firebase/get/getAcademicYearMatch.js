@@ -29,7 +29,7 @@ export async function getAcademicYearMatch(
 			);
 			return true;
 		} else {
-			navigate("/gdsc-nubaliwag/admin/dashboard/dashboardform?action=add");
+			navigate("/admin/dashboard/dashboardform?action=add");
 		}
 	} catch (error) {
 		triggerAlert("danger", "Error checking academic year: " + error.message);

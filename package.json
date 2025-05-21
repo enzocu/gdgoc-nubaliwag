@@ -9,7 +9,7 @@
 		"lint": "eslint .",
 		"preview": "vite preview",
 		"predeploy": "npm run build",
-		"deploy": "gh-pages -d dist"
+		"deploy": "git add docs && git commit -m 'Deploy' && git push origin main"
 	},
 	"dependencies": {
 		"bootstrap": "^5.3.6",

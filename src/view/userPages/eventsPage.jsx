@@ -153,9 +153,7 @@ function EventsPage() {
 											<button
 												className="gdg-view-details-btn"
 												onClick={() =>
-													navigate(
-														`/gdsc-nubaliwag/user/events/eventsdetails?id=${ev.id}`
-													)
+													navigate(`/user/events/eventsdetails?id=${ev.id}`)
 												}
 											>
 												View Details
