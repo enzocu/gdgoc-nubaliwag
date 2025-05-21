@@ -35,7 +35,7 @@ const Footer = () => {
 				<label className="section-title">Developer</label>
 				<ul className="developer-list">
 					<li className="developer-item">
-						<h4 className="dev-name">Lawrence S. Cunanan</h4>
+						<h4 className="dev-name">Lawrence Cunanan</h4>
 						<p className="dev-role">Web Development Lead</p>
 					</li>
 					<li className="developer-item">
@@ -43,7 +43,7 @@ const Footer = () => {
 						<p className="dev-role">Web Assistant</p>
 					</li>
 					<li className="developer-item">
-						<h4 className="dev-name">Russel</h4>
+						<h4 className="dev-name">Russel Lopez</h4>
 						<p className="dev-role">Web Assistant</p>
 					</li>
 					<li className="developer-item">
