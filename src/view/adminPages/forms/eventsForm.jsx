@@ -500,10 +500,6 @@ function EventsForm() {
 												}
 												alt="gallery"
 											/>
-											<span>
-												{item.ga_status}
-												{index}
-											</span>
 										</div>
 									))}
 							</div>

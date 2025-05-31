@@ -5,7 +5,10 @@ import {
 	serverTimestamp,
 	collection,
 } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
+
+const isBlobURL = (url) => url?.startsWith("blob:");
 
 export const updateUser = async (
 	currentAcadyear,
@@ -17,8 +20,21 @@ export const updateUser = async (
 ) => {
 	try {
 		setBtnloading(true);
+		const storage = getStorage();
 		const userRef = doc(db, "users", userId);
-		const sameAY = false;
+
+		let photoURL = member.me_photoURL;
+
+		// Upload photo if blob URL and file exists
+		if (isBlobURL(photoURL) && member.me_photo instanceof File) {
+			const fileName = `${member.me_studentID}_${Date.now()}_${
+				member.me_photo.name
+			}`;
+			const storageRef = ref(storage, `users/${fileName}`);
+			await uploadBytes(storageRef, member.me_photo);
+			photoURL = await getDownloadURL(storageRef);
+		}
+
 		const userData = {
 			us_studentID: member.me_studentID || "",
 			us_fname: member.me_fname || "",
@@ -26,7 +42,7 @@ export const updateUser = async (
 			us_lname: member.me_lname || "",
 			us_suffix: member.me_suffix || "",
 			us_email: member.me_email || "",
-			us_photoURL: member.me_photoURL || null,
+			us_photoURL: photoURL || null,
 			us_status: "Active",
 			us_update_timestamp: serverTimestamp(),
 		};
@@ -52,8 +68,8 @@ export const updateUser = async (
 				await updateDoc(roleRef, roleData);
 
 				if (
-					currentAcadyear.id == ro.ro_ayID &&
-					member.me_ayID.id != ro.ro_ayID
+					currentAcadyear.id === ro.ro_ayID &&
+					member.me_ayID.id !== ro.ro_ayID
 				) {
 					await updateDoc(userRef, { us_ayID: currentAcadyear });
 				}

@@ -11,7 +11,7 @@ import ProtectedRoute from "../view/context/protectedRoute";
 import { AcadYearProvider } from "./context/acadyearContext";
 
 function App() {
-	const isMaintenance = true;
+	const isMaintenance = false;
 
 	return isMaintenance ? (
 		<div className="text-center mt-5">
