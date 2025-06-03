@@ -184,7 +184,7 @@
 }
 
 .event-title-container .event-Upcoming {
-	background-color: #6da5ff;
+	background-color: #bdd6ff;
 	color: #0f3169 !important;
 }
 
@@ -364,12 +364,14 @@
 	.event-content .event-right {
 		width: 100%;
 	}
-}
 
-@media (max-width: 550px) {
-	.gdg-grid {
+	.speaker-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 80px 100px;
+	}
+	.speaker-grid:has(.core-member:only-child) {
 		grid-template-columns: repeat(1, 1fr);
-		gap: none;
 	}
 }
 
@@ -381,6 +383,30 @@
 
 	.event-title-container {
 		top: 50%;
+	}
+}
+
+@media (max-width: 630px) {
+	.speaker-grid {
+		display: flex;
+		flex-direction: row;
+		overflow-x: auto;
+		gap: 30px;
+		justify-content: left;
+	}
+	.speaker-grid:has(.core-member:only-child) {
+		justify-content: center;
+	}
+	.speaker-member {
+		flex: 0 0 auto;
+		width: 300px !important;
+	}
+}
+
+@media (max-width: 550px) {
+	.gdg-grid {
+		grid-template-columns: repeat(1, 1fr);
+		gap: none;
 	}
 }
 
