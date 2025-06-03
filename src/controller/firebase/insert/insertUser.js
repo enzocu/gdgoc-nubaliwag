@@ -2,8 +2,6 @@ import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
 
-const isBlobURL = (url) => url?.startsWith("blob:");
-
 export const insertUser = async (
 	ay_id,
 	member,
@@ -15,15 +13,14 @@ export const insertUser = async (
 		setBtnloading(true);
 		const storage = getStorage();
 
-		let photoURL = member.me_photoURL;
+		let photoURL = null;
 
-		if (isBlobURL(photoURL) && member.me_photo instanceof File) {
-			const fileName = `${member.me_studentID}_${Date.now()}_${
-				member.me_photo.name
-			}`;
-			const storageRef = ref(storage, `users/${fileName}`);
-			await uploadBytes(storageRef, member.me_photo);
-			photoURL = await getDownloadURL(storageRef);
+		if (member.me_photoURL instanceof File) {
+			const fileRef = ref(storage, `users/${ay_id.id}/profile_${Date.now()}`);
+			const snapshot = await uploadBytes(fileRef, member.me_photoURL);
+			photoURL = await getDownloadURL(snapshot.ref);
+		} else if (typeof member.me_photoURL === "string") {
+			photoURL = member.me_photoURL;
 		}
 
 		const userData = {
@@ -54,7 +51,7 @@ export const insertUser = async (
 			await addDoc(collection(db, "role"), roleData);
 		}
 
-		triggerAlert("success", "User inserted successfully! ID: " + docRef.id);
+		triggerAlert("success", "Member successfully registered!");
 		return docRef.id;
 	} catch (error) {
 		triggerAlert("danger", "Error inserting user: " + error.message);

@@ -5,6 +5,8 @@ import profileIcon from "../../assets/profileicon.jpg";
 
 import { MdAdd } from "react-icons/md";
 import { BiSort } from "react-icons/bi";
+import Lottie from "lottie-react";
+import noevent from "../../assets/noevent.json";
 
 import SideBar from "../../view/components/sideBar";
 import HeaderPageAdmin from "../../view/components/headerPageAdmin";
@@ -103,29 +105,29 @@ function MembersPage() {
 								</button>
 							</NavLink>
 						</section>
-						<section className="member-list">
-							<table className="core-table">
-								<thead>
-									<tr>
-										<th>Image</th>
-										<th>
-											Name <BiSort />
-										</th>
-										<th>Student Email</th>
-										<th>Student ID</th>
+						{member.length > 0 ? (
+							<section className="member-list">
+								<table className="core-table">
+									<thead>
+										<tr>
+											<th>Image</th>
+											<th>
+												Name <BiSort />
+											</th>
+											<th>Student Email</th>
+											<th>Student ID</th>
 
-										<th>
-											Role <BiSort />
-										</th>
-										<th>
-											Role Type <BiSort />
-										</th>
-										<th>Academic Year</th>
-									</tr>
-								</thead>
-								<tbody>
-									{member.length > 0 ? (
-										member.map((item, index) => (
+											<th>
+												Role <BiSort />
+											</th>
+											<th>
+												Role Type <BiSort />
+											</th>
+											<th>Academic Year</th>
+										</tr>
+									</thead>
+									<tbody>
+										{member.map((item, index) => (
 											<tr
 												key={item.id || index}
 												onClick={() =>
@@ -156,17 +158,15 @@ function MembersPage() {
 												<td>{item.roles.ro_type || "N/A"}</td>
 												<td>{item.roles.ro_acadyear || "N/A"}</td>
 											</tr>
-										))
-									) : (
-										<tr>
-											<td colSpan="7" className="text-center py-3">
-												No records found.
-											</td>
-										</tr>
-									)}
-								</tbody>
-							</table>
-						</section>
+										))}
+									</tbody>
+								</table>
+							</section>
+						) : (
+							<div className="no-event-lottie-container">
+								<Lottie animationData={noevent} loop={true} />
+							</div>
+						)}
 					</div>
 				</main>
 			</div>

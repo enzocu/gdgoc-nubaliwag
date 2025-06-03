@@ -40,11 +40,11 @@ const Footer = () => {
 					</li>
 					<li className="developer-item">
 						<h4 className="dev-name">Jolo Tadeo</h4>
-						<p className="dev-role">Web Assistant</p>
+						<p className="dev-role">Web Development Lead Assistant</p>
 					</li>
 					<li className="developer-item">
 						<h4 className="dev-name">Russel Lopez</h4>
-						<p className="dev-role">Web Assistant</p>
+						<p className="dev-role">Web Development Lead Assistant</p>
 					</li>
 					<li className="developer-item">
 						<h4 className="dev-name">Marcus Sanchez</h4>

@@ -4,6 +4,8 @@ import "../../style/adminStyle/events.css";
 import uxplorer from "../../assets/uxplorer.png";
 
 import { MdAdd } from "react-icons/md";
+import Lottie from "lottie-react";
+import noevent from "../../assets/noevent.json";
 
 import SideBar from "../components/sideBar";
 import HeaderPageAdmin from "../components/headerPageAdmin";
@@ -152,11 +154,14 @@ function EventsPage() {
 								</button>
 							</NavLink>
 						</section>
-						<section className="events-list">
-							{event.length === 0 ? (
-								<p className="no-records-message">No events found.</p>
-							) : (
-								event.map((ev) => (
+
+						{event.length === 0 ? (
+							<div className="no-event-lottie-container">
+								<Lottie animationData={noevent} loop={true} />
+							</div>
+						) : (
+							<section className="events-list">
+								{event.map((ev) => (
 									<NavLink
 										key={ev.id}
 										to={`/admin/events/eventsdetails?id=${ev.id}`}
@@ -190,9 +195,9 @@ function EventsPage() {
 											</div>
 										</div>
 									</NavLink>
-								))
-							)}
-						</section>
+								))}
+							</section>
+						)}
 					</div>
 				</main>
 			</div>

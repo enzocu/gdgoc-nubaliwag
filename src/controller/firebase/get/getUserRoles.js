@@ -60,9 +60,20 @@ export const getUserRoles = async (
 		enrichedRoles.forEach((role) => {
 			const type = role.ro_type;
 			if (members[type]) {
-				members[type].push(role);
+				if (role.ro_name.toLowerCase().includes("chief")) {
+					members[type].unshift(role);
+				} else if (role.ro_name.toLowerCase().includes("lead")) {
+					const chiefsCount = members[type].filter((r) =>
+						r.ro_name.toLowerCase().includes("chief")
+					).length;
+					members[type].splice(chiefsCount, 0, role);
+				} else {
+					members[type].push(role);
+				}
 			}
 		});
+
+		sortTechnologyDepartment(members);
 
 		setState(members);
 		return members;
@@ -129,4 +140,69 @@ export const mergeRoles = (roles = []) => {
 	});
 
 	return merged;
+};
+export const sortTechnologyDepartment = (members) => {
+	if (
+		!members["Technology Department"] ||
+		!members["Technology Department"].length
+	)
+		return;
+
+	const roles = {
+		chief: [],
+		others: {},
+		solo: [],
+	};
+
+	const getPriority = (name) => {
+		const lower = name.toLowerCase();
+		if (lower.includes("chief")) return 0;
+		if (lower.includes("lead") && !lower.includes("assistant")) return 1;
+		if (lower.includes("lead assistant")) return 2;
+		if (lower.includes("assistant")) return 3;
+		return 99;
+	};
+
+	members["Technology Department"].forEach((member) => {
+		const name = member.ro_name.toLowerCase();
+		const words = name.split(" ");
+		const baseRole = words[0];
+
+		const priority = getPriority(name);
+
+		if (priority === 0) {
+			roles.chief.push(member);
+		} else {
+			if (!roles.others[baseRole]) {
+				roles.others[baseRole] = [];
+			}
+			roles.others[baseRole].push({ ...member, _priority: priority });
+		}
+	});
+
+	const grouped = {};
+	for (const base in roles.others) {
+		const group = roles.others[base];
+		if (group.length === 1) {
+			roles.solo.push(group[0]);
+		} else {
+			group.sort((a, b) => {
+				if (a._priority !== b._priority) {
+					return a._priority - b._priority;
+				}
+				return a.ro_name.localeCompare(b.ro_name);
+			});
+			grouped[base] = group;
+		}
+	}
+
+	const finalList = [
+		...roles.chief,
+		...roles.solo,
+		...Object.keys(grouped)
+			.sort()
+			.flatMap((base) => grouped[base]),
+	].map(({ _priority, ...rest }) => rest);
+
+	members["Technology Department"] = finalList;
 };

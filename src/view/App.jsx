@@ -1,5 +1,6 @@
 import AdminRoutes from "./adminPages/adminRoutes";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import LoginModal from "./components/boostrap/loginModal";
 import HeaderPage from "./components/headerPage";

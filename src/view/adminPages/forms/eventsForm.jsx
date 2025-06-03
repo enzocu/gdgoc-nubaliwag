@@ -5,6 +5,8 @@ import "../../../style/adminStyle/events.css";
 import { RxCross2 } from "react-icons/rx";
 import { VscLinkExternal } from "react-icons/vsc";
 
+import upload from "../../../assets/upload.png";
+
 import HeaderFormAdmin from "../../../view/components/headerFormAdmin";
 
 import { useAlert } from "../../context/alertProvider";
@@ -190,6 +192,14 @@ function EventsForm() {
 										required
 										value={event.ev_date || ""}
 										onChange={(e) => handleChange(e, setEvent)}
+										min={
+											new Date(
+												Date.now() +
+													(8 * 60 + new Date().getTimezoneOffset()) * 60000
+											)
+												.toISOString()
+												.split("T")[0]
+										}
 									/>
 								</div>
 
@@ -213,6 +223,7 @@ function EventsForm() {
 											name="ev_endtime"
 											required
 											value={event.ev_endtime || ""}
+											min={event.ev_starttime || ""}
 											onChange={(e) => handleChange(e, setEvent)}
 										/>
 									</div>
@@ -290,7 +301,14 @@ function EventsForm() {
 								className="form-image-container"
 								onClick={() => eventImageref.current.click()}
 							>
-								<img src={event.ev_photoURL} alt="Event Photo" />
+								<img
+									src={
+										event.ev_photoURL instanceof File
+											? URL.createObjectURL(event.ev_photoURL)
+											: event.ev_photoURL
+									}
+									alt="Event Photo"
+								/>
 							</div>
 						</div>
 					</section>
@@ -477,6 +495,7 @@ function EventsForm() {
 										style={{ display: "none" }}
 										onChange={(e) => galleryChange(e.target.files, setGallery)}
 									/>
+									<img src={upload} alt="Event Photo" />
 								</div>
 
 								{gallery.length > 0 &&

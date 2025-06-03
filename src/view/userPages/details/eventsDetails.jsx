@@ -27,8 +27,7 @@ import {
 	formatDate,
 	formatTime,
 } from "../../../controller/customAction/toTimestamp";
-
-getEventDetails;
+import SpeakerDetails from "../../components/boostrap/speakerprofileModal";
 
 const defaultEvent = {
 	ev_name: "Event Title",
@@ -59,6 +58,7 @@ function EventsDetailsPage() {
 	const [event, setEvent] = useState(defaultEvent);
 	const [organizer, setOrganizer] = useState([]);
 	const [speaker, setSpeaker] = useState([]);
+	const [selectedSpeaker, setSelectedSpeaker] = useState(null);
 	const [photos, setPhoto] = useState([]);
 	useEffect(() => {
 		if (id) {
@@ -80,20 +80,17 @@ function EventsDetailsPage() {
 
 	return (
 		<>
+			<SpeakerDetails sp={selectedSpeaker} />
 			<div className="user-body eventdetails">
 				<main className="event-main">
 					<section className="event-hero-section">
-						<img
-							src={event.ev_photoURL || photosImg}
-							alt="Event"
-							className="event-hero-image"
-						/>
-
-						<div className="event-title-container">
-							<h1 className="event-title">{event.ev_name}</h1>
-							<p className={"event-" + event.ev_status}>{event.ev_status}</p>
-
-							{event.ev_status == "Upcoming" && (
+						<div className="event-hero-container">
+							<img
+								src={event.ev_photoURL || photosImg}
+								alt="Event"
+								className="event-hero-image"
+							/>
+							{event.ev_status === "Upcoming" && (
 								<button
 									className="btn btn-register"
 									onClick={() => (window.location.href = event.ev_rsvplink)}
@@ -106,6 +103,10 @@ function EventsDetailsPage() {
 
 					<section className="event-content">
 						<div className="event-left">
+							<div className="event-title-container">
+								<h1 className="event-title">{event.ev_name}</h1>
+								<p className={"event-" + event.ev_status}>{event.ev_status}</p>
+							</div>
 							<div className="event-about">
 								<h2 className="about-title">About</h2>
 								<p className="about-text">{event.ev_overview}</p>
@@ -126,27 +127,6 @@ function EventsDetailsPage() {
 												<div className="organizer-details">
 													<h4 className="organizer-name">{org.or_name}</h4>
 													<p className="organizer-email">{org.or_email}</p>
-												</div>
-											</li>
-										))}
-									</ul>
-								</div>
-							)}
-							{speaker.length > 0 && (
-								<div className="event-speakers">
-									<h3 className="event-label">Speakers</h3>
-									<ul className="speaker-list">
-										{speaker.map((sp, index) => (
-											<li className="speaker-item" key={index}>
-												<div className="profile-circle">
-													<img
-														src={sp.sp_photoURL || profileIcon}
-														alt={sp.sp_name}
-													/>
-												</div>
-												<div className="speaker-details">
-													<h4 className="speaker-name">{sp.sp_name}</h4>
-													<p className="speaker-info">{sp.sp_info}</p>
 												</div>
 											</li>
 										))}
@@ -196,6 +176,36 @@ function EventsDetailsPage() {
 							</div>
 						</div>
 					</section>
+
+					{speaker.length > 0 && (
+						<section className="spearker-section">
+							<div className="section-container">
+								<h2>Event Speakers</h2>
+								<div className="speaker-grid">
+									{speaker.map((sp, index) => (
+										<div className="speaker-member" key={index}>
+											<img
+												src={sp.sp_photoURL || profileIcon}
+												alt={sp.sp_name}
+												className="speaker-photo"
+											/>
+											<div className="speaker-info">
+												<h3>{sp.sp_name}</h3>
+												<a
+													className="view-profile"
+													href="#profileModal"
+													data-bs-toggle="modal"
+													onClick={() => setSelectedSpeaker(sp)}
+												>
+													View Bio
+												</a>
+											</div>
+										</div>
+									))}
+								</div>
+							</div>
+						</section>
+					)}
 
 					{photos.length > 0 && (
 						<section className="photos-section">

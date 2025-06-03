@@ -1,6 +1,6 @@
 .user-body main .hero-section {
 	height: 700px;
-	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+	background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)),
 		url("../../assets/banner.png");
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -129,18 +129,44 @@ p.section-description {
 	gap: 30px;
 }
 
+@keyframes floatUpDown {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-5px);
+	}
+}
+
 .service-card {
 	background-color: var(--bg-color);
 	border-radius: 10px;
 	padding: 30px 20px;
 	text-align: center;
 	border: 1px solid var(--border-color);
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	transition: box-shadow 0.3s ease;
+
+	animation: floatUpDown 1.4s ease-in-out infinite;
+}
+
+.service-card:nth-child(1) {
+	animation-delay: 0s;
+}
+.service-card:nth-child(2) {
+	animation-delay: 0.25s;
+}
+.service-card:nth-child(3) {
+	animation-delay: 0.5s;
+}
+.service-card:nth-child(4) {
+	animation-delay: 0.75s;
 }
 
 .service-card:hover {
 	box-shadow: 0 4px 10px var(--color-shadow);
-	transform: translateY(-5px) !important;
+	animation-play-state: paused;
+	transform: translateY(-5px);
 }
 
 .service-icon {

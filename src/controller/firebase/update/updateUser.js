@@ -8,8 +8,6 @@ import {
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
 
-const isBlobURL = (url) => url?.startsWith("blob:");
-
 export const updateUser = async (
 	currentAcadyear,
 	userId,
@@ -25,14 +23,13 @@ export const updateUser = async (
 
 		let photoURL = member.me_photoURL;
 
-		// Upload photo if blob URL and file exists
-		if (isBlobURL(photoURL) && member.me_photo instanceof File) {
-			const fileName = `${member.me_studentID}_${Date.now()}_${
-				member.me_photo.name
-			}`;
-			const storageRef = ref(storage, `users/${fileName}`);
-			await uploadBytes(storageRef, member.me_photo);
-			photoURL = await getDownloadURL(storageRef);
+		if (member.me_photoURL instanceof File) {
+			const fileRef = ref(
+				storage,
+				`users/${currentAcadyear.id}/profile_${Date.now()}`
+			);
+			const snapshot = await uploadBytes(fileRef, member.me_photoURL);
+			photoURL = await getDownloadURL(snapshot.ref);
 		}
 
 		const userData = {

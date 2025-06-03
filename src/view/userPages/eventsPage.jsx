@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import "../../style/userStyle/eventsprojects.css";
 import event from "../../assets/event.png";
 
+import Lottie from "lottie-react";
+import noevent from "../../assets/noevent.json";
+
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
@@ -83,11 +86,13 @@ function EventsPage() {
 							/>
 						</div>
 
-						<div className="gdg-grid">
-							{events.length === 0 ? (
-								<p className="no-records-message">No events found.</p>
-							) : (
-								events.map((ev) => (
+						{events.length === 0 ? (
+							<div className="no-event-lottie-container">
+								<Lottie animationData={noevent} loop={true} />
+							</div>
+						) : (
+							<div className="gdg-grid">
+								{events.map((ev) => (
 									<div className="gdg-event-card" key={ev.id}>
 										<div className="gdg-event-image">
 											<span className="gdg-event-type">
@@ -160,9 +165,9 @@ function EventsPage() {
 											</button>
 										</div>
 									</div>
-								))
-							)}
-						</div>
+								))}
+							</div>
+						)}
 					</section>
 				</main>
 				<Footer />

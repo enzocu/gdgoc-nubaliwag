@@ -6,6 +6,8 @@ import "../../style/adminStyle/photos.css";
 import uxplorer from "../../assets/uxplorer.png";
 
 import { MdAdd } from "react-icons/md";
+import Lottie from "lottie-react";
+import noevent from "../../assets/noevent.json";
 
 import SideBar from "../components/sideBar";
 import HeaderPageAdmin from "../components/headerPageAdmin";
@@ -103,11 +105,14 @@ function PhotosPage() {
 								</button>
 							</NavLink>
 						</section>
-						<section className="photos-list">
-							{photo.length === 0 ? (
-								<p className="no-records-message">No photos found.</p>
-							) : (
-								photo.map((ph) => (
+
+						{photo.length === 0 ? (
+							<div className="no-event-lottie-container">
+								<Lottie animationData={noevent} loop={true} />
+							</div>
+						) : (
+							<section className="photos-list">
+								{photo.map((ph) => (
 									<NavLink
 										key={ph.id}
 										to={`/admin/photos/photosform?action=edit&id=${ph.id}`}
@@ -135,9 +140,9 @@ function PhotosPage() {
 											</div>
 										</div>
 									</NavLink>
-								))
-							)}
-						</section>
+								))}
+							</section>
+						)}
 					</div>
 				</main>
 			</div>

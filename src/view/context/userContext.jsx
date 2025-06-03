@@ -14,6 +14,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
+
 	const { triggerAlert } = useAlert();
 
 	const [loading, setLoading] = useState(true);

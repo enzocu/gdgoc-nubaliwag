@@ -10,15 +10,6 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
 import { toTimestamp } from "../../customAction/toTimestamp";
 
-const isBlobURL = (url) => url?.startsWith("blob:");
-
-const uploadPhoto = async (storage, folder, file, prefix) => {
-	const fileName = `${prefix}_${Date.now()}_${file.name}`;
-	const storageRef = ref(storage, `${folder}/${fileName}`);
-	await uploadBytes(storageRef, file);
-	return await getDownloadURL(storageRef);
-};
-
 export const updateEvent = async (
 	ay_id,
 	eventId,
@@ -35,15 +26,13 @@ export const updateEvent = async (
 		const storage = getStorage();
 		const eventRef = doc(db, "events", eventId);
 
-		// Handle event photo upload
+		// Upload event photo if it's a File
 		let eventPhotoURL = event.ev_photoURL;
-		if (isBlobURL(eventPhotoURL) && event.ev_photo instanceof File) {
-			eventPhotoURL = await uploadPhoto(
-				storage,
-				"events",
-				event.ev_photo,
-				"event"
-			);
+		if (event.ev_photoURL instanceof File) {
+			const eventRefPath = `events/${ay_id.id}/event_${Date.now()}`;
+			const eventImageRef = ref(storage, eventRefPath);
+			const snapshot = await uploadBytes(eventImageRef, event.ev_photoURL);
+			eventPhotoURL = await getDownloadURL(snapshot.ref);
 		}
 
 		const updatedEventData = {
@@ -62,16 +51,16 @@ export const updateEvent = async (
 
 		await updateDoc(eventRef, updatedEventData);
 
-		// Handle speakers with photo upload
+		// Update or add speakers with photo upload
 		for (const sp of speakers) {
 			let spPhotoURL = sp.sp_photoURL;
-			if (isBlobURL(spPhotoURL) && sp.sp_photo instanceof File) {
-				spPhotoURL = await uploadPhoto(
-					storage,
-					"speakers",
-					sp.sp_photo,
-					"speaker"
-				);
+			if (sp.sp_photoURL instanceof File) {
+				const spPath = `events/${ay_id.id}/speakers/${
+					sp.sp_name
+				}_${Date.now()}`;
+				const spRef = ref(storage, spPath);
+				const spSnap = await uploadBytes(spRef, sp.sp_photoURL);
+				spPhotoURL = await getDownloadURL(spSnap.ref);
 			}
 
 			const speakerData = {
@@ -92,16 +81,14 @@ export const updateEvent = async (
 			}
 		}
 
-		// Handle gallery with photo upload
+		// Update or add gallery photos with upload
 		for (const ga of gallery) {
 			let gaPhotoURL = ga.ga_photoURL;
-			if (isBlobURL(gaPhotoURL) && ga.ga_photo instanceof File) {
-				gaPhotoURL = await uploadPhoto(
-					storage,
-					"gallery",
-					ga.ga_photo,
-					"gallery"
-				);
+			if (ga.ga_photoURL instanceof File) {
+				const gaPath = `events/${ay_id.id}/gallery/gallery_${Date.now()}`;
+				const gaRef = ref(storage, gaPath);
+				const gaSnap = await uploadBytes(gaRef, ga.ga_photoURL);
+				gaPhotoURL = await getDownloadURL(gaSnap.ref);
 			}
 
 			const galleryData = {
@@ -125,10 +112,7 @@ export const updateEvent = async (
 			}
 		}
 
-		triggerAlert(
-			"success",
-			"Event updated successfully! Document ID: " + eventId
-		);
+		triggerAlert("success", "Event updated successfully");
 		navigate("/admin/events/eventsdetails?id=" + eventId);
 		return true;
 	} catch (error) {

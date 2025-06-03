@@ -32,8 +32,7 @@ const defaultMember = {
 	me_suffix: "",
 	me_studentID: "",
 	me_email: "",
-	me_photoURL:
-		"https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/events/gdsc_jaCyFcF.jpg",
+	me_photoURL: "",
 	me_roindex: null,
 	me_roid: null,
 	me_roname: "",
@@ -89,6 +88,9 @@ function MembersForm() {
 				);
 			}
 		}
+
+		setMember(defaultMember);
+		setRole([]);
 	};
 
 	useEffect(() => {
@@ -146,7 +148,16 @@ function MembersForm() {
 							className="form-image-container"
 							onClick={() => memberImageref.current.click()}
 						>
-							<img src={member.me_photoURL} alt="Member Photo" />
+							<img
+								src={
+									member.me_photoURL
+										? member.me_photoURL instanceof File
+											? URL.createObjectURL(member.me_photoURL)
+											: member.me_photoURL
+										: "https://res.cloudinary.com/startup-grind/image/upload/c_fill,dpr_2.0,f_auto,g_center,q_auto:good/v1/gcs/platform-data-goog/events/gdsc_jaCyFcF.jpg"
+								}
+								alt="Member Photo"
+							/>
 						</div>
 					</section>
 

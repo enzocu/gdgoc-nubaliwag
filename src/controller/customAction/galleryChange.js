@@ -4,7 +4,7 @@ export const galleryChange = (input, setGallery) => {
 	if (typeof input === "string" && input.trim() !== "") {
 		fileUrl = input;
 	} else if (input && input[0]) {
-		fileUrl = URL.createObjectURL(input[0]);
+		fileUrl = input[0];
 	}
 
 	setGallery((prevState) => [
