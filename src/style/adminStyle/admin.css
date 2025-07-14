@@ -54,6 +54,10 @@
 	color: var(--bg-button-color) !important;
 }
 
+.sidebar li a.active {
+	color: var(--bg-button-color) !important;
+}
+
 @media (max-width: 768px) {
 	.sidebar {
 		position: absolute;
@@ -177,6 +181,14 @@
 	border-color: var(--border-color);
 }
 
+.content-form textarea.form-control {
+	min-height: 300px;
+}
+.min-height-100 {
+	height: 44px;
+	min-height: 44px !important;
+}
+
 .admin-body .form-control::placeholder {
 	color: gray;
 	opacity: 1;
@@ -201,6 +213,10 @@
 	background-color: #0e4885;
 }
 
+.content-form .form-btn.btn-outline-danger {
+	background-color: #b71515;
+}
+
 .admin-body .form-btn.btn-outline-primary {
 	border: 1px solid var(--border-color);
 	background-color: transparent;
@@ -214,10 +230,16 @@
 	background-color: var(--bg-button-color);
 }
 
+.content-form .form-btn.btn-outline-danger:hover {
+	color: white;
+	background-color: #6e0505;
+}
+
 .upload-url {
 	color: var(--bg-button-color);
 	transition: all 0.3s ease;
 	cursor: pointer;
+	margin: 0;
 	margin-left: 10px;
 }
 
@@ -265,6 +287,7 @@
 
 .content-form .form-btn.btn-primary,
 .content-form .form-btn.btn-outline-primary,
+.content-form .form-btn.btn-outline-danger,
 .content-details .form-btn.btn-primary,
 .content-details .form-btn.btn-outline-primary {
 	width: 100px;
@@ -310,6 +333,7 @@
 	}
 	.content-form .form-btn.btn-primary,
 	.content-form .form-btn.btn-outline-primary,
+	.content-form .form-btn.btn-outline-danger,
 	.content-details .form-btn.btn-primary,
 	.content-details .form-btn.btn-outline-primary {
 		flex: 1;

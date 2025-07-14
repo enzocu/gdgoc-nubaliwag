@@ -16,7 +16,8 @@ export const insertEvent = async (
 	speakers,
 	gallery,
 	triggerAlert,
-	setBtnloading
+	setBtnloading,
+	navigate
 ) => {
 	try {
 		setBtnloading(true);
@@ -25,16 +26,19 @@ export const insertEvent = async (
 		let eventPhotoURL = event.ev_photoURL;
 
 		if (event.ev_photoURL instanceof File) {
-			const eventRefPath = `events/${ay_id.id}/event_${Date.now()}`;
+			const eventRefPath = `events/${event.ev_ayID}/event_${Date.now()}`;
 			const eventImageRef = ref(storage, eventRefPath);
 			const snapshot = await uploadBytes(eventImageRef, event.ev_photoURL);
 			eventPhotoURL = await getDownloadURL(snapshot.ref);
 		}
 
+		const eventDateTime = new Date(`${event.ev_date}T${event.ev_starttime}`);
+		const now = new Date();
+
 		const eventData = {
-			ev_ayID: ay_id,
+			ev_ayID: doc(db, "academicyear", event.ev_ayID),
 			ev_organizer: organizers.map((org) => `${org.or_id}|${org.or_name}`),
-			ev_status: "Upcoming",
+			ev_status: eventDateTime > now ? "Upcoming" : "Completed",
 			ev_type: event.ev_type || "",
 			ev_name: event.ev_name || "",
 			ev_rsvplink: event.ev_rsvplink || "",
@@ -56,7 +60,7 @@ export const insertEvent = async (
 			let spPhotoURL = sp.sp_photoURL;
 
 			if (sp.sp_photoURL instanceof File) {
-				const spPath = `events/${ay_id.id}/speakers/${
+				const spPath = `events/${event.ev_ayID}/speakers/${
 					sp.sp_name
 				}_${Date.now()}`;
 				const spRef = ref(storage, spPath);
@@ -79,14 +83,14 @@ export const insertEvent = async (
 			let gaPhotoURL = ga.ga_photoURL;
 
 			if (ga.ga_photoURL instanceof File) {
-				const gaPath = `events/${ay_id.id}/gallery/gallery_${Date.now()}`;
+				const gaPath = `events/${event.ev_ayID}/gallery/gallery_${Date.now()}`;
 				const gaRef = ref(storage, gaPath);
 				const gaSnap = await uploadBytes(gaRef, ga.ga_photoURL);
 				gaPhotoURL = await getDownloadURL(gaSnap.ref);
 			}
 
 			const galleryData = {
-				ph_ayID: ay_id,
+				ph_ayID: doc(db, "academicyear", event.ev_ayID),
 				ph_evID: eventRef,
 				ph_status: "Active",
 				ph_type: "Event",
@@ -97,6 +101,7 @@ export const insertEvent = async (
 		}
 
 		triggerAlert("success", "Event successfully registered!");
+		navigate("/admin/events/eventsdetails?id=" + docRef.id);
 		return docRef.id;
 	} catch (error) {
 		triggerAlert("danger", "Error inserting event: " + error.message);

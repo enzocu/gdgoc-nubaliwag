@@ -13,9 +13,10 @@ import { useAlert } from "../context/alertProvider";
 import { useUser } from "../context/userContext";
 import { useLoading } from "../context/loadingProvider";
 
-import getEvents from "../../controller/firebase/get/getEvents";
-import { getUsersWithoutRoles } from "../../controller/firebase/get/getUsersWithoutRoles";
 import { getAcademicYearMatch } from "../../controller/firebase/get/getAcademicYearMatch";
+import getEvents from "../../controller/firebase/get/getEvents";
+import { getMembers } from "../../controller/firebase/get/getCoreMembers";
+
 import {
 	getActiveEventsCount,
 	getActivePhotosCount,
@@ -50,9 +51,10 @@ function DashboardPage() {
 				setEvent,
 				setLoading,
 				triggerAlert,
-				10
+				5
 			);
-			getUsersWithoutRoles(ay_id, 10, setMember, setLoading, triggerAlert);
+
+			getMembers(ay_id.id, null, null, setMember, setLoading, triggerAlert, 5);
 		}
 	}, [loading, user, userDetails, location.pathname]);
 

@@ -4,6 +4,7 @@ import "../../../style/adminStyle/events.css";
 
 import { RxCross2 } from "react-icons/rx";
 import { VscLinkExternal } from "react-icons/vsc";
+import { MdDeleteForever } from "react-icons/md";
 
 import upload from "../../../assets/upload.png";
 
@@ -15,20 +16,24 @@ import { useLoading } from "../../context/loadingProvider";
 
 import { handleChange } from "../../../controller/customAction/handleChange";
 import { organizerChange } from "../../../controller/customAction/organizerChange";
-import { speakerChange } from "../../../controller/customAction/speakerChange";
+import {
+	speakerChange,
+	selectedSpeaker,
+	updateSpeaker,
+} from "../../../controller/customAction/speakerChange";
 import { galleryChange } from "../../../controller/customAction/galleryChange";
 import { toggleStatus } from "../../../controller/customAction/toggleStatus";
-import { selectedSpeaker } from "../../../controller/customAction/selectedSpeaker";
-import { updateSpeaker } from "../../../controller/customAction/updateSpeaker";
 import UrlUpload from "../../components/boostrap/urlModal";
 
 import { insertEvent } from "../../../controller/firebase/insert/insertEvents";
 import { updateEvent } from "../../../controller/firebase/update/updateEvent";
 import { getEventDetails } from "../../../controller/firebase/get/getEventdetails";
-import { getUsersWithoutRoles } from "../../../controller/firebase/get/getUsersWithoutRoles";
+import { getMembers } from "../../../controller/firebase/get/getCoreMembers";
+import { getAcademicYears } from "../../../controller/firebase/get/getAcademicYears";
 import { openModal } from "../../../controller/customAction/showcloseModal";
 
 const defaultEvent = {
+	ev_ayID: "",
 	ev_name: "",
 	ev_type: "",
 	ev_date: null,
@@ -66,6 +71,7 @@ function EventsForm() {
 	const [organizer, setOrganizer] = useState([]);
 	const [speaker, setSpeaker] = useState([]);
 	const [gallery, setGallery] = useState([]);
+	const [academicYear, setAcademicYear] = useState([]);
 
 	const [url, setUrl] = useState({
 		name: null,
@@ -73,19 +79,20 @@ function EventsForm() {
 		setState: () => {},
 	});
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		if (action == "add") {
 			if (!loading && user && userDetails) {
-				insertEvent(
-					userDetails.us_ayID,
+				await insertEvent(
+					userDetails.us_ayID.id,
 					event,
 					organizer,
 					speaker,
 					gallery,
 					triggerAlert,
-					setBtnloading
+					setBtnloading,
+					navigate
 				);
 			}
 
@@ -95,8 +102,7 @@ function EventsForm() {
 			setGallery([]);
 		} else if (action == "edit" && id) {
 			if (!loading && user && userDetails) {
-				updateEvent(
-					userDetails.us_ayID,
+				await updateEvent(
 					id,
 					event,
 					organizer,
@@ -129,14 +135,22 @@ function EventsForm() {
 	}, [id]);
 
 	useEffect(() => {
-		if (!loading && user && userDetails) {
-			getUsersWithoutRoles(
-				userDetails.us_ayID,
-				100,
+		if (!loading && event.ev_ayID) {
+			getMembers(
+				event.ev_ayID,
+				null,
+				null,
 				setOrganizerlist,
 				setLoading,
-				triggerAlert
+				triggerAlert,
+				100
 			);
+		}
+	}, [event.ev_ayID]);
+
+	useEffect(() => {
+		if (!loading && user && userDetails) {
+			getAcademicYears(setAcademicYear);
 		}
 	}, [loading]);
 
@@ -183,24 +197,35 @@ function EventsForm() {
 							</div>
 
 							<div className="form-row-date-time">
-								<div className="form-field date">
-									<label>Event Date</label>
-									<input
-										type="date"
-										className="form-control"
-										name="ev_date"
-										required
-										value={event.ev_date || ""}
-										onChange={(e) => handleChange(e, setEvent)}
-										min={
-											new Date(
-												Date.now() +
-													(8 * 60 + new Date().getTimezoneOffset()) * 60000
-											)
-												.toISOString()
-												.split("T")[0]
-										}
-									/>
+								<div className="form-time-row">
+									<div className="form-field date">
+										<label>Event A.Y </label>
+										<select
+											className="form-control"
+											name="ev_ayID"
+											value={event.ev_ayID || ""}
+											onChange={(e) => handleChange(e, setEvent)}
+											required
+										>
+											<option value="">Select A.Y</option>
+											{academicYear.map((item) => (
+												<option key={item.id} value={item.id}>
+													{`A.Y ${item.ay_academicyear}`}
+												</option>
+											))}
+										</select>
+									</div>
+									<div className="form-field date">
+										<label>Event Date</label>
+										<input
+											type="date"
+											className="form-control"
+											name="ev_date"
+											required
+											value={event.ev_date || ""}
+											onChange={(e) => handleChange(e, setEvent)}
+										/>
+									</div>
 								</div>
 
 								<div className="form-time-row">
@@ -232,7 +257,7 @@ function EventsForm() {
 
 							<div className="form-row-date-organizer">
 								<div className="form-field">
-									<label>Location</label>
+									<label>Event Venue</label>
 									<input
 										type="text"
 										className="form-control"
@@ -244,38 +269,40 @@ function EventsForm() {
 									/>
 								</div>
 
-								<div className="form-field">
-									<label>Organizer</label>
-									<select
-										className="form-control"
-										name="ev_organizer"
-										value={event.ev_organizer || ""}
-										onChange={(e) =>
-											organizerChange(
-												e.target.value,
-												organizer,
-												setOrganizer,
-												setEvent
-											)
-										}
-									>
-										<option value="">Select Organizer</option>
-										{organizerlist.map((item, index) => (
-											<option
-												key={index}
-												value={`${item.id}|${item.us_fname} ${item.us_lname}`}
-											>
-												{item.us_fname} {item.us_lname}
-											</option>
-										))}
-									</select>
-								</div>
+								{event.ev_ayID != "" && (
+									<div className="form-field">
+										<label>Organizer</label>
+										<select
+											className="form-control"
+											name="ev_organizer"
+											value={event.ev_organizer || ""}
+											onChange={(e) =>
+												organizerChange(
+													e.target.value,
+													organizer,
+													setOrganizer,
+													setEvent
+												)
+											}
+										>
+											<option value="">Select Organizer</option>
+											{organizerlist.map((item, index) => (
+												<option
+													key={index}
+													value={`${item.id}|${item.us_fname} ${item.us_lname}`}
+												>
+													{item.us_fname} {item.us_lname}
+												</option>
+											))}
+										</select>
+									</div>
+								)}
 							</div>
 						</div>
 
 						<div className="form-subgroup form-subgroup-image">
-							<label>
-								Event Image
+							<span>
+								<label>Event Image</label>
 								<VscLinkExternal
 									className="upload-url"
 									onClick={() => {
@@ -287,7 +314,7 @@ function EventsForm() {
 										});
 									}}
 								/>
-							</label>
+							</span>
 
 							<input
 								type="file"
@@ -320,13 +347,13 @@ function EventsForm() {
 								<ul className="organizer-list">
 									{organizer.map((item, index) => (
 										<li key={index}>
+											<span>{item.or_name}</span>
 											<RxCross2
 												className="icon"
 												onClick={() =>
 													toggleStatus(index, setOrganizer, null, null)
 												}
 											/>
-											<span>{item.or_name}</span>
 										</li>
 									))}
 								</ul>
@@ -363,9 +390,8 @@ function EventsForm() {
 									</div>
 									<div className="form-field">
 										<label>Speaker Info</label>
-										<input
-											type="text"
-											className="form-control"
+										<textarea
+											className="form-control min-height-100"
 											name="ev_spinfo"
 											placeholder="Speaker Background"
 											value={event.ev_spinfo || ""}
@@ -373,8 +399,8 @@ function EventsForm() {
 										/>
 									</div>
 									<div className="form-field">
-										<label>
-											Speaker Image
+										<span>
+											<label>Speaker Image</label>
 											<VscLinkExternal
 												className="upload-url"
 												onClick={() => {
@@ -386,7 +412,7 @@ function EventsForm() {
 													});
 												}}
 											/>
-										</label>
+										</span>
 										<input
 											type="file"
 											className="form-control"
@@ -419,21 +445,26 @@ function EventsForm() {
 									</button>
 								</div>
 
-								{speaker.length > 0 && (
+								{speaker.filter((sp) => sp.sp_status !== "Inactive").length >
+									0 && (
 									<div className="form-subgroup form-subgroup-speaker">
 										<label>Added Speaker</label>
 										<ul className="speaker-list">
 											{speaker.map((item, index) => (
 												<li
 													key={index}
-													onClick={() =>
-														selectedSpeaker(index, speaker, setEvent)
-													}
 													style={{
 														display:
 															item.sp_status === "Inactive" ? "none" : "flex",
 													}}
 												>
+													<span
+														onClick={() =>
+															selectedSpeaker(index, speaker, setEvent)
+														}
+													>
+														{item.sp_name}
+													</span>
 													<RxCross2
 														className="icon"
 														onClick={() =>
@@ -445,7 +476,6 @@ function EventsForm() {
 															)
 														}
 													/>
-													<span>{item.sp_name}</span>
 												</li>
 											))}
 										</ul>
@@ -463,13 +493,13 @@ function EventsForm() {
 								placeholder="Brief description about the event"
 								value={event.ev_overview || ""}
 								onChange={(e) => handleChange(e, setEvent)}
-								rows="5"
+								rows="10"
 							></textarea>
 						</div>
 
 						<div className="form-subgroup form-subgroup-gallery">
-							<label>
-								Gallery
+							<span>
+								<label>Gallery</label>
 								<VscLinkExternal
 									className="upload-url"
 									onClick={() => {
@@ -481,7 +511,7 @@ function EventsForm() {
 										});
 									}}
 								/>
-							</label>
+							</span>
 							<div className="form-gallery-container-list">
 								<div
 									className="form-image-container"
@@ -502,15 +532,21 @@ function EventsForm() {
 									gallery.map((item, index) => (
 										<div
 											key={index}
-											className="form-image-container"
-											onClick={() =>
-												toggleStatus(index, setGallery, "ga_id", "ga_status")
-											}
+											className="form-image-container image-with-remove"
 											style={{
 												display:
 													item.ga_status === "Inactive" ? "none" : "block",
 											}}
 										>
+											{/* Remove icon using react-icon */}
+											<MdDeleteForever
+												className="remove-icon"
+												onClick={(e) => {
+													e.stopPropagation();
+													toggleStatus(index, setGallery, "ga_id", "ga_status");
+												}}
+											/>
+
 											<img
 												src={
 													item.ga_photoURL instanceof File
@@ -534,7 +570,7 @@ function EventsForm() {
 								<span className="spinner-border spinner-border-sm"></span>
 							) : (
 								"Save"
-							)}{" "}
+							)}
 						</button>
 						<button
 							type="button"

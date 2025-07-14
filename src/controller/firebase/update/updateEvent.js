@@ -3,15 +3,21 @@ import {
 	addDoc,
 	collection,
 	doc,
+	deleteDoc,
 	Timestamp,
 	serverTimestamp,
 } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+	getStorage,
+	ref,
+	uploadBytes,
+	getDownloadURL,
+	deleteObject,
+} from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
 import { toTimestamp } from "../../customAction/toTimestamp";
 
 export const updateEvent = async (
-	ay_id,
 	eventId,
 	event,
 	organizers,
@@ -29,7 +35,7 @@ export const updateEvent = async (
 		// Upload event photo if it's a File
 		let eventPhotoURL = event.ev_photoURL;
 		if (event.ev_photoURL instanceof File) {
-			const eventRefPath = `events/${ay_id.id}/event_${Date.now()}`;
+			const eventRefPath = `events/${event.ev_ayID}/event_${Date.now()}`;
 			const eventImageRef = ref(storage, eventRefPath);
 			const snapshot = await uploadBytes(eventImageRef, event.ev_photoURL);
 			eventPhotoURL = await getDownloadURL(snapshot.ref);
@@ -51,11 +57,12 @@ export const updateEvent = async (
 
 		await updateDoc(eventRef, updatedEventData);
 
-		// Update or add speakers with photo upload
+		// SPEAKERS
 		for (const sp of speakers) {
 			let spPhotoURL = sp.sp_photoURL;
+
 			if (sp.sp_photoURL instanceof File) {
-				const spPath = `events/${ay_id.id}/speakers/${
+				const spPath = `events/${event.ev_ayID}/speakers/${
 					sp.sp_name
 				}_${Date.now()}`;
 				const spRef = ref(storage, spPath);
@@ -63,52 +70,86 @@ export const updateEvent = async (
 				spPhotoURL = await getDownloadURL(spSnap.ref);
 			}
 
-			const speakerData = {
-				sp_status: sp.sp_status || "Active",
-				sp_name: sp.sp_name || "",
-				sp_info: sp.sp_info || "",
-				sp_photoURL: spPhotoURL || "",
-				...(sp.sp_id
-					? { sp_update_timestamp: serverTimestamp() }
-					: { sp_create_timestamp: serverTimestamp(), sp_evID: eventRef }),
-			};
-
 			if (sp.sp_id) {
 				const speakerRef = doc(db, "speaker", sp.sp_id);
-				await updateDoc(speakerRef, speakerData);
+
+				if (sp.sp_status === "Inactive") {
+					// Remove photo if it's a Firebase URL
+					if (
+						typeof sp.sp_photoURL === "string" &&
+						sp.sp_photoURL.includes("firebase")
+					) {
+						const imgPath = decodeURIComponent(
+							sp.sp_photoURL.split("/o/")[1].split("?")[0]
+						);
+						const imgRef = ref(storage, imgPath);
+						await deleteObject(imgRef).catch(() => {});
+					}
+					await deleteDoc(speakerRef);
+				} else {
+					await updateDoc(speakerRef, {
+						sp_status: sp.sp_status || "Active",
+						sp_name: sp.sp_name || "",
+						sp_info: sp.sp_info || "",
+						sp_photoURL: spPhotoURL || "",
+						sp_update_timestamp: serverTimestamp(),
+					});
+				}
 			} else {
-				await addDoc(collection(db, "speaker"), speakerData);
+				await addDoc(collection(db, "speaker"), {
+					sp_status: sp.sp_status || "Active",
+					sp_name: sp.sp_name || "",
+					sp_info: sp.sp_info || "",
+					sp_photoURL: spPhotoURL || "",
+					sp_evID: eventRef,
+					sp_create_timestamp: serverTimestamp(),
+				});
 			}
 		}
 
-		// Update or add gallery photos with upload
+		// GALLERY PHOTOS
 		for (const ga of gallery) {
 			let gaPhotoURL = ga.ga_photoURL;
+
 			if (ga.ga_photoURL instanceof File) {
-				const gaPath = `events/${ay_id.id}/gallery/gallery_${Date.now()}`;
+				const gaPath = `events/${event.ev_ayID}/gallery/gallery_${Date.now()}`;
 				const gaRef = ref(storage, gaPath);
 				const gaSnap = await uploadBytes(gaRef, ga.ga_photoURL);
 				gaPhotoURL = await getDownloadURL(gaSnap.ref);
 			}
 
-			const galleryData = {
-				ph_photoURL: gaPhotoURL || "",
-				ph_status: ga.ga_status || "Active",
-				...(ga.ga_id
-					? { ph_update_timestamp: serverTimestamp() }
-					: {
-							ph_ayID: ay_id,
-							ph_evID: eventRef,
-							ph_type: "Event",
-							ph_create_timestamp: serverTimestamp(),
-					  }),
-			};
-
 			if (ga.ga_id) {
 				const photoRef = doc(db, "photos", ga.ga_id);
-				await updateDoc(photoRef, galleryData);
+
+				if (ga.ga_status === "Inactive") {
+					// Delete image from storage
+					if (
+						typeof ga.ga_photoURL === "string" &&
+						ga.ga_photoURL.includes("firebase")
+					) {
+						const imgPath = decodeURIComponent(
+							ga.ga_photoURL.split("/o/")[1].split("?")[0]
+						);
+						const imgRef = ref(storage, imgPath);
+						await deleteObject(imgRef).catch(() => {});
+					}
+					await deleteDoc(photoRef);
+				} else {
+					await updateDoc(photoRef, {
+						ph_photoURL: gaPhotoURL || "",
+						ph_status: ga.ga_status || "Active",
+						ph_update_timestamp: serverTimestamp(),
+					});
+				}
 			} else {
-				await addDoc(collection(db, "photos"), galleryData);
+				await addDoc(collection(db, "photos"), {
+					ph_ayID: doc(db, "academicyear", event.ev_ayID),
+					ph_evID: eventRef,
+					ph_type: "Event",
+					ph_photoURL: gaPhotoURL || "",
+					ph_status: ga.ga_status || "Active",
+					ph_create_timestamp: serverTimestamp(),
+				});
 			}
 		}
 

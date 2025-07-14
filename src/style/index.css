@@ -47,6 +47,7 @@
 	--bg-text-field: white;
 
 	--color-shadow: rgba(71, 70, 70, 0.1);
+	--img-bg-color: #e0e0e0;
 }
 
 [data-theme="dark"] {
@@ -63,6 +64,7 @@
 	--bg-text-field: #252628;
 
 	--color-shadow: rgba(114, 110, 110, 0.1);
+	--img-bg-color: #3a3a3a;
 }
 
 a {

@@ -17,15 +17,15 @@ import { useAlert } from "../context/alertProvider";
 
 import { toggleDropdown } from "../../controller/customAction/showcloseModal";
 
-import { getUsers } from "../../controller/firebase/get/getCoreMembers";
+import { getMembers } from "../../controller/firebase/get/getCoreMembers";
 import { getAcademicYears } from "../../controller/firebase/get/getAcademicYears";
 
 function MembersPage() {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const { triggerAlert } = useAlert();
-	const { user, userDetails, loading } = useUser();
-	const { setLoading, setPath } = useLoading();
+	const { user, userDetails, loading: userLoading } = useUser();
+	const { setLoading, setPath, loading: appLoading } = useLoading();
 
 	const [search, setSearch] = useState(null);
 	const [roType, setType] = useState(null);
@@ -34,29 +34,25 @@ function MembersPage() {
 	const [acadyear, setAcadyear] = useState(null);
 
 	useEffect(() => {
-		if (!loading && user && userDetails) {
+		if (!userLoading && user && userDetails) {
 			setPath(location.pathname);
-			getUsers(
-				search == null || search == ""
-					? acadyear == null
-						? userDetails.us_ayID.id
-						: acadyear
-					: null,
+			getMembers(
+				acadyear == null ? userDetails.us_ayID.id : acadyear,
 				roType,
 				search,
 				setMember,
 				setLoading,
 				triggerAlert,
-				500
+				100
 			);
 		}
-	}, [loading, search, roType, acadyear]);
+	}, [userLoading, search, roType, acadyear]);
 
 	useEffect(() => {
-		if (!loading && user && userDetails) {
-			getAcademicYears(null, setAcademicYear);
+		if (!userLoading && user && userDetails) {
+			getAcademicYears(setAcademicYear);
 		}
-	}, [loading]);
+	}, [userLoading]);
 
 	return (
 		<>
@@ -110,13 +106,12 @@ function MembersPage() {
 								<table className="core-table">
 									<thead>
 										<tr>
-											<th>Image</th>
+											<th>Avatar</th>
 											<th>
 												Name <BiSort />
 											</th>
-											<th>Student Email</th>
 											<th>Student ID</th>
-
+											<th>Email</th>
 											<th>
 												Role <BiSort />
 											</th>
@@ -127,46 +122,61 @@ function MembersPage() {
 										</tr>
 									</thead>
 									<tbody>
-										{member.map((item, index) => (
-											<tr
-												key={item.id || index}
-												onClick={() =>
-													navigate(
-														`/admin/members/membersform?action=edit&id=${item.id}`
-													)
-												}
-											>
-												<td>
-													<div className="profile-pic">
-														<img
-															src={item.us_photoURL || profileIcon}
-															alt="Profile"
-														/>
-													</div>
-												</td>
-												<td>
-													{" "}
-													{item.us_fname || item.us_mname || item.us_lname
-														? `${item.us_fname || ""} ${item.us_mname || ""} ${
-																item.us_lname || ""
-														  }`.trim()
-														: "No name"}
-												</td>
-												<td>{item.us_email || "No email"}</td>
-												<td>{item.us_studentID || "N/A"}</td>
-												<td>{item.roles.ro_name || "N/A"}</td>
-												<td>{item.roles.ro_type || "N/A"}</td>
-												<td>{item.roles.ro_acadyear || "N/A"}</td>
-											</tr>
-										))}
+										{member.map((item, index) => {
+											const acad = item.us_acadyear?.[0] || {};
+											const roles = acad.us_role || [];
+
+											const roleNames = roles
+												.map((r) => r.role)
+												.filter(Boolean)
+												.join(", ");
+											const roleTypes = roles
+												.map((r) => r.type)
+												.filter(Boolean)
+												.join(", ");
+
+											return (
+												<tr
+													key={item.id || index}
+													onClick={() =>
+														navigate(
+															`/admin/members/membersform?action=edit&id=${item.id}`
+														)
+													}
+												>
+													<td>
+														<div className="profile-pic">
+															<img
+																src={item.us_photoURL || profileIcon}
+																alt="Profile"
+															/>
+														</div>
+													</td>
+													<td>
+														{item.us_fname || item.us_mname || item.us_lname
+															? `${item.us_fname || ""} ${
+																	item.us_mname || ""
+															  } ${item.us_lname || ""} ${
+																	item.us_suffix || ""
+															  }`.trim()
+															: "No name"}
+													</td>
+													<td>{item.us_studentID || "N/A"}</td>
+													<td>{item.us_email || "No email"}</td>
+													<td>{roleNames || "N/A"}</td>
+													<td>{roleTypes || "N/A"}</td>
+													<td>{acad.us_yrname || "N/A"}</td>
+												</tr>
+											);
+										})}
 									</tbody>
 								</table>
 							</section>
-						) : (
+						) : !appLoading && member.length === 0 ? (
 							<div className="no-event-lottie-container">
 								<Lottie animationData={noevent} loop={true} />
 							</div>
-						)}
+						) : null}
 					</div>
 				</main>
 			</div>

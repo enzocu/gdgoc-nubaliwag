@@ -22,9 +22,9 @@ import { getAcademicYears } from "../../controller/firebase/get/getAcademicYears
 function EventsPage() {
 	const location = useLocation();
 
-	const { user, userDetails, loading } = useUser();
 	const { triggerAlert } = useAlert();
-	const { setLoading, setPath } = useLoading();
+	const { user, userDetails, loading: userLoading } = useUser();
+	const { setLoading, setPath, loading: appLoading } = useLoading();
 
 	const [search, setSearch] = useState(null);
 	const [evStatus, setStatus] = useState(null);
@@ -34,15 +34,11 @@ function EventsPage() {
 	const [acadyear, setAcadyear] = useState(null);
 
 	useEffect(() => {
-		if (!loading && user && userDetails) {
+		if (!userLoading && user && userDetails) {
 			setPath(location.pathname);
 
 			getEvents(
-				search == null || search == ""
-					? acadyear == null
-						? userDetails.us_ayID.id
-						: acadyear
-					: null,
+				acadyear == null ? userDetails.us_ayID.id : acadyear,
 				evStatus,
 				evType,
 				search,
@@ -52,13 +48,13 @@ function EventsPage() {
 				500
 			);
 		}
-	}, [loading, search, acadyear, evStatus, evType]);
+	}, [userLoading, search, acadyear, evStatus, evType]);
 
 	useEffect(() => {
-		if (!loading && user && userDetails) {
-			getAcademicYears(null, setAcademicYear);
+		if (!userLoading && user && userDetails) {
+			getAcademicYears(setAcademicYear);
 		}
-	}, [loading]);
+	}, [userLoading]);
 
 	return (
 		<>
@@ -155,7 +151,7 @@ function EventsPage() {
 							</NavLink>
 						</section>
 
-						{event.length === 0 ? (
+						{!appLoading && event.length === 0 ? (
 							<div className="no-event-lottie-container">
 								<Lottie animationData={noevent} loop={true} />
 							</div>

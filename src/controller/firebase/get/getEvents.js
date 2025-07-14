@@ -17,23 +17,22 @@ async function getEvents(
 	setEvent,
 	setLoading,
 	triggerAlert,
-	limit = 1000
+	limit = 50
 ) {
-	try {
-		setLoading(true);
+	setLoading?.(true);
 
+	try {
 		const eventRef = collection(db, "events");
 		const conditions = [];
 
+		// Add filters if provided
 		if (ay_id) {
 			const ayDocRef = doc(db, "academicyear", ay_id);
 			conditions.push(where("ev_ayID", "==", ayDocRef));
 		}
-
 		if (ev_status) {
 			conditions.push(where("ev_status", "==", ev_status));
 		}
-
 		if (ev_type) {
 			conditions.push(where("ev_type", "==", ev_type));
 		}
@@ -45,28 +44,26 @@ async function getEvents(
 			limitFn(limit)
 		);
 
-		const querySnapshot = await getDocs(q);
+		const snapshot = await getDocs(q);
 
-		let events = querySnapshot.docs.map((doc) => ({
+		let events = snapshot.docs.map((doc) => ({
 			id: doc.id,
 			...doc.data(),
 		}));
 
-		if (search) {
-			const lowerSearch = search.toLowerCase();
-			events = events.filter((ev) =>
-				ev.ev_name?.toLowerCase().includes(lowerSearch)
-			);
+		if (search?.trim()) {
+			const term = search.toLowerCase();
+			events = events.filter((ev) => ev.ev_name?.toLowerCase().includes(term));
 		}
 
-		setEvent(events);
-		setLoading(false);
+		setEvent?.(events);
 		return events;
 	} catch (error) {
-		triggerAlert("danger", "Error fetching events: " + error.message);
-		console.log(error.message);
-		setLoading(false);
+		console.error("getEvents error:", error);
+		triggerAlert?.("danger", `Error fetching events: ${error.message}`);
 		return [];
+	} finally {
+		setLoading?.(false);
 	}
 }
 

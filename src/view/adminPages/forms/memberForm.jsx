@@ -13,19 +13,21 @@ import { useUser } from "../../context/userContext";
 import { useLoading } from "../../context/loadingProvider";
 
 import { handleChange } from "../../../controller/customAction/handleChange";
-import { roleChange } from "../../../controller/customAction/roleChange";
-import { updateRole } from "../../../controller/customAction/updateRole";
-import { selectedRole } from "../../../controller/customAction/selectedRole";
-import { toggleStatus } from "../../../controller/customAction/toggleStatus";
+import {
+	roleChange,
+	selectedMember,
+	removeMember,
+} from "../../../controller/customAction/roleChange";
+
 import { openModal } from "../../../controller/customAction/showcloseModal";
 
-import { insertUser } from "../../../controller/firebase/insert/insertUser";
-import { updateUser } from "../../../controller/firebase/update/updateUser";
+import { insertMember } from "../../../controller/firebase/insert/insertMember";
+import { updateMember } from "../../../controller/firebase/update/updateMember";
 import { getMemberdetails } from "../../../controller/firebase/get/getMemberdetails";
 import { getAcademicYears } from "../../../controller/firebase/get/getAcademicYears";
 
 const defaultMember = {
-	me_ayID: "",
+	me_acadyear: [],
 	me_fname: "",
 	me_mname: "",
 	me_lname: "",
@@ -33,11 +35,13 @@ const defaultMember = {
 	me_studentID: "",
 	me_email: "",
 	me_photoURL: "",
-	me_roindex: null,
-	me_roid: null,
-	me_roname: "",
-	me_roacadyear: "",
-	me_rotype: "",
+
+	me_yearIndex: null,
+	me_roleIndex: null,
+	me_roleName: "",
+	me_roleAcadyearID: "",
+	me_roleAcadyearName: "",
+	me_roleType: "",
 };
 
 function MembersForm() {
@@ -55,7 +59,6 @@ function MembersForm() {
 	const [btnloading, setBtnloading] = useState(false);
 	const [member, setMember] = useState(defaultMember);
 	const [academicYear, setAcademicYear] = useState([]);
-	const [role, setRole] = useState([]);
 
 	const [url, setUrl] = useState({
 		name: null,
@@ -68,21 +71,14 @@ function MembersForm() {
 
 		if (action == "add") {
 			if (!loading && user && userDetails) {
-				insertUser(
-					userDetails.us_ayID,
-					member,
-					role,
-					triggerAlert,
-					setBtnloading
-				);
+				insertMember(userDetails.us_ayID, member, triggerAlert, setBtnloading);
 			}
 		} else if (action == "edit" && id) {
 			if (!loading && user && userDetails) {
-				updateUser(
+				updateMember(
 					userDetails.us_ayID,
 					id,
 					member,
-					role,
 					triggerAlert,
 					setBtnloading
 				);
@@ -90,7 +86,6 @@ function MembersForm() {
 		}
 
 		setMember(defaultMember);
-		setRole([]);
 	};
 
 	useEffect(() => {
@@ -98,10 +93,9 @@ function MembersForm() {
 			setPath(location.pathname);
 			const unsubscribe = getMemberdetails(
 				id,
-				triggerAlert,
-				setLoading,
 				setMember,
-				setRole
+				triggerAlert,
+				setLoading
 			);
 
 			return () => unsubscribe();
@@ -110,7 +104,7 @@ function MembersForm() {
 
 	useEffect(() => {
 		if (!loading && user && userDetails) {
-			getAcademicYears(userDetails.us_ayID, setAcademicYear);
+			getAcademicYears(setAcademicYear);
 		}
 	}, [loading]);
 
@@ -122,8 +116,8 @@ function MembersForm() {
 				<HeaderFormAdmin Title="Add Core Member" />
 				<form className="content-form members" onSubmit={handleSubmit}>
 					<section className="form-group form-group-image">
-						<label htmlFor="me_photoURL">
-							Image
+						<span>
+							<label htmlFor="me_photoURL">Image</label>
 							<VscLinkExternal
 								className="upload-url"
 								onClick={() => {
@@ -135,7 +129,7 @@ function MembersForm() {
 									});
 								}}
 							/>
-						</label>
+						</span>
 						<input
 							type="file"
 							className="form-control"
@@ -225,53 +219,64 @@ function MembersForm() {
 											type="text"
 											className="form-control"
 											placeholder="Enter Role"
-											name="me_roname"
-											value={member.me_roname || ""}
+											name="me_roleName"
+											value={member.me_roleName || ""}
 											onChange={(e) => handleChange(e, setMember)}
 										/>
 									</div>
 
 									<div className="form-field">
 										<label>Academic Year</label>
-										<input
-											type="text"
+										<select
 											className="form-control"
-											placeholder="Academic Year"
-											name="me_roacadyear"
-											readOnly
-											value={
-												member.me_roacadyear
-													? member.me_roacadyear.split("|")[1]
-													: academicYear.length > 0
-													? academicYear[0].ay_academicyear
-													: ""
-											}
-										/>
+											name="me_roleAcadyearID"
+											value={member.me_roleAcadyearID || ""}
+											onChange={(e) => {
+												const selectedId = e.target.value;
+												const selectedOption = e.target.selectedOptions[0];
+												const selectedName =
+													selectedOption.getAttribute("data-year");
+
+												setMember((prev) => ({
+													...prev,
+													me_roleAcadyearID: selectedId,
+													me_roleAcadyearName: selectedName,
+												}));
+											}}
+										>
+											<option value="">Select Academic Year</option>
+											{academicYear.map((item) => (
+												<option
+													key={item.id}
+													value={item.id}
+													data-year={item.ay_academicyear}
+												>
+													{`A.Y ${item.ay_academicyear}`}
+												</option>
+											))}
+										</select>
 									</div>
 
 									<div className="form-field">
 										<label>Role Type</label>
 										<select
 											className="form-control"
-											name="me_rotype"
-											value={member.me_rotype || ""}
+											name="me_roleType"
+											value={member.me_roleType || ""}
 											onChange={(e) => handleChange(e, setMember)}
 										>
 											<option value="">Select Role Type</option>
-											<option value="Organization Lead">
-												Organization Lead
-											</option>
-											<option value="Executive Board">Executive Board</option>
-											<option value="Core Lead">Core Lead</option>
-											<option value="Operations Department">
-												Operations Department
-											</option>
-											<option value="Finance Department">
-												Finance Department
-											</option>
-											<option value="Technology Department">
-												Technology Department
-											</option>
+											{[
+												"Organization Lead",
+												"Adviser",
+												"Executive Board",
+												"Core Leads",
+												"Technology Department",
+											].map((role, index) => (
+												<option key={index} value={role}>
+													{role}
+												</option>
+											))}
 										</select>
 									</div>
 								</div>
@@ -282,47 +287,69 @@ function MembersForm() {
 										className="form-btn form-btn-add"
 										style={{
 											color:
-												!member.me_roname || !member.me_rotype
+												!member.me_roleName ||
+												!member.me_roleAcadyearID ||
+												!member.me_roleType
 													? "gray"
 													: "var(--bg-button-color)",
 										}}
-										disabled={!member.me_roname || !member.me_rotype}
+										disabled={
+											!member.me_roleName ||
+											!member.me_roleAcadyearID ||
+											!member.me_roleType
+										}
 										onClick={() => {
-											if (!member.me_roname || !member.me_rotype) return;
+											if (
+												!member.me_roleName ||
+												!member.me_roleAcadyearID ||
+												!member.me_roleType
+											)
+												return;
 
-											if (member.me_roindex == null && academicYear != null) {
-												roleChange(member, setRole, setMember, academicYear);
-											} else if (member.me_roindex != null) {
-												updateRole(member, role, setRole, setMember);
+											if (
+												member.me_yearIndex == null ||
+												member.me_roleIndex == null
+											) {
+												roleChange(member, setMember);
+											} else if (
+												member.me_yearIndex != null ||
+												member.me_roleIndex != null
+											) {
+												roleChange(member, setMember);
 											}
 										}}
 									>
-										{member.me_roindex == null ? "Add Role" : "Update Role"}
+										{member.me_yearIndex == null || member.me_roleIndex == null
+											? "Add Role"
+											: "Update Role"}
 									</button>
 								</div>
 
-								{role.length > 0 && (
+								{member.me_acadyear.length > 0 && (
 									<div className="form-subgroup-role">
-										<label>Added Role</label>
+										<label>Added Roles</label>
 										<ul className="role-list">
-											{role.map((item, index) => (
-												<li
-													key={index}
-													onClick={() => selectedRole(index, role, setMember)}
-													style={{
-														display:
-															item.ro_status === "Inactive" ? "none" : "flex",
-													}}
-												>
-													<RxCross2
-														className="icon"
-														onClick={() =>
-															toggleStatus(index, setRole, "ro_id", "ro_status")
-														}
-													/>
-													<span>{`${item.ro_name} | ${item.ro_acadyear} | ${item.ro_type}`}</span>
-												</li>
-											))}
+											{member.me_acadyear.map((acadItem, i) =>
+												(acadItem.us_role || []).map((roleItem, j) => (
+													<li key={`${i}-${j}`}>
+														<span
+															onClick={() =>
+																selectedMember(i, j, member, setMember)
+															}
+														>
+															{[
+																roleItem.role || "No Role",
+																"A.Y " + acadItem.us_yrname || "No Year",
+																roleItem.type || "No Type",
+															].join(" • ")}
+														</span>
+														<RxCross2
+															className="icon"
+															onClick={() => removeMember(i, j, setMember)}
+														/>
+													</li>
+												))
+											)}
 										</ul>
 									</div>
 								)}
@@ -330,16 +357,12 @@ function MembersForm() {
 						</div>
 					</section>
 					<section className="form-group form-group-buttons">
-						<button
-							type="submit"
-							className="btn form-btn form-btn btn-primary"
-							disabled={role.length < 1}
-						>
+						<button type="submit" className="btn form-btn form-btn btn-primary">
 							{btnloading ? (
 								<span className="spinner-border spinner-border-sm"></span>
 							) : (
 								"Save"
-							)}{" "}
+							)}
 						</button>
 						<button
 							type="button"

@@ -1,11 +1,10 @@
-import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
+import { serverTimestamp, doc, collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
 
-export const insertUser = async (
+export const insertMember = async (
 	ay_id,
 	member,
-	role,
 	triggerAlert,
 	setBtnloading
 ) => {
@@ -20,12 +19,15 @@ export const insertUser = async (
 			const snapshot = await uploadBytes(fileRef, member.me_photoURL);
 			photoURL = await getDownloadURL(snapshot.ref);
 		} else if (typeof member.me_photoURL === "string") {
-			photoURL = member.me_photoURL;
+			photoURL =
+				member.me_photoURL === ""
+					? "https://firebasestorage.googleapis.com/v0/b/gdscwebsite-796a1.firebasestorage.app/o/defaultProfile.png?alt=media&token=529880f3-6887-4588-b44c-4f109991561e"
+					: member.me_photoURL;
 		}
 
 		const userData = {
 			us_status: "Active",
-			us_ayID: ay_id,
+			us_acadyear: member.me_acadyear,
 			us_studentID: member.me_studentID || "",
 			us_fname: member.me_fname || "",
 			us_mname: member.me_mname || "",
@@ -37,19 +39,6 @@ export const insertUser = async (
 		};
 
 		const docRef = await addDoc(collection(db, "users"), userData);
-
-		for (const ro of role) {
-			const roleData = {
-				ro_usID: docRef,
-				ro_ayID: doc(db, "academicyear", ro.ro_ayID),
-				ro_status: "Active",
-				ro_name: ro.ro_name || "",
-				ro_acadyear: ro.ro_acadyear,
-				ro_type: ro.ro_type,
-				ro_create_timestamp: serverTimestamp(),
-			};
-			await addDoc(collection(db, "role"), roleData);
-		}
 
 		triggerAlert("success", "Member successfully registered!");
 		return docRef.id;

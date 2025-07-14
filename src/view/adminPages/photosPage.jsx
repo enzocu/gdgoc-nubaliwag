@@ -24,9 +24,9 @@ import getPhotos from "../../controller/firebase/get/getPhotos";
 function PhotosPage() {
 	const location = useLocation();
 
-	const { user, userDetails, loading } = useUser();
 	const { triggerAlert } = useAlert();
-	const { setLoading, setPath } = useLoading();
+	const { user, userDetails, loading: userLoading } = useUser();
+	const { setLoading, setPath, loading: appLoading } = useLoading();
 
 	const [search, setSearch] = useState(null);
 	const [photo, setPhoto] = useState([]);
@@ -34,29 +34,26 @@ function PhotosPage() {
 	const [acadyear, setAcadyear] = useState(null);
 
 	useEffect(() => {
-		if (!loading && user && userDetails) {
+		if (!userLoading && user && userDetails) {
 			setPath(location.pathname);
 
 			getPhotos(
-				search == null || search == ""
-					? acadyear == null
-						? userDetails.us_ayID.id
-						: acadyear
-					: null,
+				acadyear == null ? userDetails.us_ayID.id : acadyear,
 				search,
 				setPhoto,
 				setLoading,
 				triggerAlert,
-				500
+				100
 			);
 		}
-	}, [loading, search, acadyear]);
+	}, [userLoading, search, acadyear]);
 
 	useEffect(() => {
-		if (!loading && user && userDetails) {
-			getAcademicYears(null, setAcademicYear);
+		if (!userLoading && user && userDetails) {
+			getAcademicYears(setAcademicYear);
 		}
-	}, [loading]);
+	}, [userLoading]);
+
 	return (
 		<>
 			<div className="admin-body">
@@ -106,7 +103,7 @@ function PhotosPage() {
 							</NavLink>
 						</section>
 
-						{photo.length === 0 ? (
+						{!appLoading && photo.length === 0 ? (
 							<div className="no-event-lottie-container">
 								<Lottie animationData={noevent} loop={true} />
 							</div>

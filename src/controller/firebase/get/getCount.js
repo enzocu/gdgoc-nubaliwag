@@ -49,17 +49,22 @@ export async function getActiveUsersCount(ay_id, setCount) {
 	try {
 		const usersRef = collection(db, "users");
 
-		const q = query(
-			usersRef,
-			where("us_ayID", "==", ay_id),
-			where("us_status", "==", "Active")
-		);
-
+		const q = query(usersRef, where("us_status", "==", "Active"));
 		const snapshot = await getDocs(q);
 
-		const filteredUsers = snapshot.docs.filter(
-			(doc) => doc.data().us_type !== "Super Admin"
-		);
+		const filteredUsers = snapshot.docs.filter((doc) => {
+			const data = doc.data();
+
+			if (data.us_type === "Super Admin") return false;
+
+			if (ay_id) {
+				const acadYears = data.us_acadyear || [];
+				const match = acadYears.some((item) => item.us_year === ay_id.id);
+				if (!match) return false;
+			}
+
+			return true;
+		});
 
 		const count = filteredUsers.length;
 		setCount((prev) => ({ ...prev, member: count }));

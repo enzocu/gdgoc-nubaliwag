@@ -10,7 +10,6 @@ import MembersForm from "././forms/memberForm";
 import PhotosForm from "././forms/photosForm";
 
 import EventsDetails from "././details/eventsDetails";
-import MembersDetails from "././details/memberDetails";
 
 import "../../style/adminStyle/admin.css";
 function AdminRoutes() {
@@ -34,10 +33,6 @@ function AdminRoutes() {
 
 			{/* Details */}
 			<Route path="/admin/events/eventsdetails" element={<EventsDetails />} />
-			<Route
-				path="/admin/members/membersdetails"
-				element={<MembersDetails />}
-			/>
 		</Routes>
 	);
 }

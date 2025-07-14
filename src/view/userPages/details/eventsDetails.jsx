@@ -149,7 +149,7 @@ function EventsDetailsPage() {
 							<div className="event-info-item">
 								<IoLocationOutline className="event-icon" />
 								<div className="event-location">
-									<label className="event-label">Location</label>
+									<label className="event-label">Event Venue</label>
 									<p className="event-location-value">{event.ev_location}</p>
 								</div>
 							</div>

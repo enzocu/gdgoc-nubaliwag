@@ -36,6 +36,11 @@
 	border: none;
 	border-top-right-radius: 10px;
 	border-top-left-radius: 10px;
+	background-color: var(--img-bg-color);
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .content-page.photos .photos-card .details {
 	margin: 0 20px 20px 20px;

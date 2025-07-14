@@ -111,28 +111,6 @@ function EventsDetails() {
 										</ul>
 									</div>
 								)}
-
-								{speaker.length > 0 && (
-									<div className="event-speakers">
-										<label>Speaker</label>
-										<ul className="speakers-list">
-											{speaker.map((sp, index) => (
-												<li className="speakers-item" key={index}>
-													<div className="profile-img">
-														<img
-															src={sp.sp_photoURL || profileIcon}
-															alt={sp.sp_name}
-														/>
-													</div>
-													<div className="speakers-info">
-														<h4>{sp.sp_name}</h4>
-														<p>{sp.sp_info} </p>
-													</div>
-												</li>
-											))}
-										</ul>
-									</div>
-								)}
 							</div>
 
 							<div className="event-details">
@@ -145,7 +123,7 @@ function EventsDetails() {
 									</p>
 								</div>
 								<div className="event-location">
-									<label>Location</label>
+									<label>Event Venue</label>
 									<p>{event.ev_location}</p>
 								</div>
 								<div className="event-types">
@@ -158,6 +136,30 @@ function EventsDetails() {
 								</div>
 							</div>
 						</section>
+
+						{speaker.length > 0 && (
+							<section className="event-speakers">
+								<div>
+									<label>Speaker</label>
+									<ul className="speakers-list">
+										{speaker.map((sp, index) => (
+											<li className="speakers-item" key={index}>
+												<div className="profile-img">
+													<img
+														src={sp.sp_photoURL || profileIcon}
+														alt={sp.sp_name}
+													/>
+												</div>
+												<div className="speakers-info">
+													<h4>{sp.sp_name}</h4>
+													<p>{sp.sp_info} </p>
+												</div>
+											</li>
+										))}
+									</ul>
+								</div>
+							</section>
+						)}
 
 						{gallery.length > 0 && (
 							<section className="details-gallery">

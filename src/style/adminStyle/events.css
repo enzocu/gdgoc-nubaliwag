@@ -36,6 +36,11 @@
 	border: none;
 	border-top-right-radius: 10px;
 	border-top-left-radius: 10px;
+	background-color: var(--img-bg-color);
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .content-page.events .event-status {
@@ -259,6 +264,7 @@
 }
 
 .content-details.events .details-info-group,
+.content-details.events .event-speakers,
 .content-details.events .details-gallery,
 .details-group-buttons {
 	display: flex;
@@ -295,6 +301,9 @@
 	color: var(--sec-text-color);
 	font-size: 14px;
 	margin: 0;
+	font-weight: normal !important;
+	white-space: pre-wrap;
+	word-wrap: break-word;
 }
 
 .content-details.events .organizer-list,
@@ -309,7 +318,6 @@
 }
 
 .content-details.events .speakers-list {
-	flex-direction: column;
 	gap: 30px;
 }
 
@@ -317,20 +325,30 @@
 .content-details.events .speakers-item {
 	display: flex;
 	align-items: start;
-	border-radius: 10px;
 	gap: 15px;
 	flex: 0 0 auto;
 }
 
-.content-details.events .profile-img {
-	width: 45px;
-	height: 45px;
+.content-details.events .speakers-item {
+	max-width: 500px;
+}
+
+.content-details.events .profile-img,
+.content-details.events .speakers-item .profile-img {
+	width: 60px;
+	height: 60px;
 	flex-shrink: 0;
+	border-radius: 50px;
+	background-color: var(--img-bg-color);
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .content-details.events .speakers-item .profile-img {
-	width: 70px;
-	height: 70px;
+	width: 100px;
+	height: 100px;
 }
 
 .content-details.events .profile-img img {
@@ -366,6 +384,21 @@
 
 .content-details.events .details-gallery {
 	display: block;
+}
+
+.remove-icon {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-size: 24px;
+	color: red;
+	cursor: pointer;
+	z-index: 1;
+	transition: color 0.2s ease;
+}
+
+.image-with-remove {
+	position: relative;
 }
 
 @media (max-width: 1290px) {
@@ -410,6 +443,7 @@
 	}
 
 	.content-details.events .details-info-group,
+	.content-details.events .event-speakers,
 	.content-details.events .details-gallery,
 	.details-group-buttons {
 		padding: 20px;
@@ -438,6 +472,7 @@
 	}
 
 	.content-details.events .details-info-group,
+	.content-details.events .event-speakers,
 	.content-details.events .details-gallery,
 	.details-group-buttons {
 		padding: 0;

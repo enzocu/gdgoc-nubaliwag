@@ -15,6 +15,7 @@ import { openModal } from "../../../controller/customAction/showcloseModal";
 
 import { insertPhoto } from "../../../controller/firebase/insert/insertPhoto";
 import { updatePhoto } from "../../../controller/firebase/update/updatePhoto";
+import { deletePhoto } from "../../../controller/firebase/delete/deletePhoto";
 import { getPhotodetails } from "../../../controller/firebase/get/getPhotodetails";
 import { getAcademicYears } from "../../../controller/firebase/get/getAcademicYears";
 
@@ -38,6 +39,7 @@ function PhotosForm() {
 	const { setLoading, setPath } = useLoading();
 	const photoImageref = useRef(null);
 
+	const [btndelete, setBtndelete] = useState(false);
 	const [btnloading, setBtnloading] = useState(false);
 	const [photos, setPhoto] = useState(defaultPhoto);
 	const [academicYear, setAcademicYear] = useState([]);
@@ -48,7 +50,7 @@ function PhotosForm() {
 		setState: () => {},
 	});
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		if (action == "add") {
@@ -58,8 +60,12 @@ function PhotosForm() {
 
 			setPhoto(defaultPhoto);
 		} else if (action == "edit" && id) {
-			if (!loading && user && userDetails) {
+			if (!btndelete) {
 				updatePhoto(id, photos, triggerAlert, setBtnloading);
+			} else {
+				await deletePhoto(id, triggerAlert, setBtnloading);
+				setBtndelete(false);
+				goBack();
 			}
 		}
 	};
@@ -79,7 +85,7 @@ function PhotosForm() {
 
 	useEffect(() => {
 		if (!loading && user && userDetails) {
-			getAcademicYears(null, setAcademicYear);
+			getAcademicYears(setAcademicYear);
 		}
 	}, [loading]);
 
@@ -100,7 +106,7 @@ function PhotosForm() {
 								<input
 									type="text"
 									className="form-control"
-									placeholder="Image Name"
+									placeholder="Title"
 									name="ph_name"
 									value={photos.ph_name || ""}
 									onChange={(e) => handleChange(e, setPhoto)}
@@ -142,8 +148,8 @@ function PhotosForm() {
 						</div>
 
 						<div className="form-group form-group-image">
-							<label>
-								Image
+							<span>
+								<label>Image</label>
 								<VscLinkExternal
 									className="upload-url"
 									onClick={() => {
@@ -155,7 +161,7 @@ function PhotosForm() {
 										});
 									}}
 								/>
-							</label>
+							</span>
 							<input
 								type="file"
 								className="form-control"
@@ -182,19 +188,33 @@ function PhotosForm() {
 
 					<section className="form-group form-group-buttons">
 						<button type="submit" className="btn form-btn form-btn btn-primary">
-							{btnloading ? (
+							{btnloading && !btndelete ? (
 								<span className="spinner-border spinner-border-sm"></span>
 							) : (
 								"Save"
-							)}{" "}
+							)}
 						</button>
-						<button
-							type="button"
-							className="btn form-btn btn-outline-primary"
-							onClick={goBack}
-						>
-							Cancel
-						</button>
+						{action === "edit" ? (
+							<button
+								onClick={() => setBtndelete(true)}
+								type="submit"
+								className="btn form-btn btn-outline-danger"
+							>
+								{btnloading && btndelete ? (
+									<span className="spinner-border spinner-border-sm"></span>
+								) : (
+									"Delete"
+								)}
+							</button>
+						) : (
+							<button
+								type="button"
+								className="btn form-btn btn-outline-primary"
+								onClick={goBack}
+							>
+								Cancel
+							</button>
+						)}
 					</section>
 				</form>
 			</main>

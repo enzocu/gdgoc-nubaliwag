@@ -1,15 +1,7 @@
-import {
-	collection,
-	query,
-	where,
-	getDocs,
-	doc,
-	limit as limitFn,
-	orderBy,
-} from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
 
-export const getUsers = async (
+export const getMembers = async (
 	ay_id = null,
 	us_type = null,
 	search = null,
@@ -20,21 +12,18 @@ export const getUsers = async (
 ) => {
 	try {
 		setLoading(true);
+
 		const userRef = collection(db, "users");
 		const conditions = [];
 
-		if (ay_id) {
-			const ayDocRef = doc(db, "academicyear", ay_id);
-			conditions.push(where("us_ayID", "==", ayDocRef));
+		if (us_type) {
+			conditions.push(where("us_type", "==", us_type));
 		}
-
-		if (us_type) conditions.push(where("us_type", "==", us_type));
 
 		let q = query(
 			userRef,
 			...conditions,
-			orderBy("us_create_timestamp", "desc"),
-			limitFn(limit)
+			orderBy("us_create_timestamp", "desc")
 		);
 
 		const snapshot = await getDocs(q);
@@ -44,14 +33,23 @@ export const getUsers = async (
 		}
 
 		const users = [];
+
 		for (const docSnap of snapshot.docs) {
 			const userData = { id: docSnap.id, ...docSnap.data() };
 
-			if (userData.us_type === "Super Admin") continue;
+			if (ay_id) {
+				const matchesAY = (userData.us_acadyear || []).some(
+					(item) => item.us_year === ay_id
+				);
+				if (!matchesAY) continue;
+
+				userData.us_acadyear = (userData.us_acadyear || []).filter(
+					(item) => item.us_year === ay_id
+				);
+			}
 
 			if (search) {
 				const searchLower = search.toLowerCase().replace(/\s+/g, " ").trim();
-
 				const fullName = `${userData.us_fname || ""} ${
 					userData.us_mname || ""
 				} ${userData.us_lname || ""}`
@@ -66,72 +64,26 @@ export const getUsers = async (
 				if (!matchesSearch) continue;
 			}
 
-			const userDocRef = doc(db, "users", docSnap.id);
-			let roles = await getUserRolesByAY(userDocRef, userData.us_ayID);
-			roles = mergeRoles(roles);
-
-			users.push({ ...userData, roles });
-
-			if (limit !== null && users.length >= limit) break;
+			users.push(userData);
 		}
 
-		setMember(users);
+		if (limit !== 5) {
+			users.sort((a, b) => {
+				const nameA = `${a.us_fname || ""}`.toLowerCase();
+				const nameB = `${b.us_fname || ""}`.toLowerCase();
+				return nameA.localeCompare(nameB);
+			});
+		}
 
-		return users;
+		const finalUsers = users.slice(0, limit);
+
+		setMember(finalUsers);
+		return finalUsers;
 	} catch (error) {
 		triggerAlert("danger", "Error fetching users: " + error.message);
-
 		setMember([]);
 		return [];
 	} finally {
 		setLoading(false);
 	}
-};
-
-export const getUserRolesByAY = async (userRef, ay_id = null) => {
-	try {
-		const roleRef = collection(db, "role");
-		const conditions = [
-			where("ro_usID", "==", userRef),
-			where("ro_status", "==", "Active"),
-		];
-		if (ay_id) {
-			conditions.push(where("ro_ayID", "==", ay_id));
-		}
-
-		const q = query(roleRef, ...conditions);
-		const snapshot = await getDocs(q);
-
-		if (snapshot.empty) return [];
-
-		return snapshot.docs.map((doc) => ({
-			id: doc.id,
-			...doc.data(),
-		}));
-	} catch (error) {
-		triggerAlert("danger", "Error fetching roles: " + error.message);
-		return [];
-	}
-};
-
-export const mergeRoles = (roles = []) => {
-	if (!roles.length)
-		return {
-			ro_name: "N/A",
-			ro_type: "N/A",
-			ro_acadyear: "N/A",
-		};
-
-	const ro_name = roles.map((role) => role.ro_name).join(", ");
-
-	const uniqueTypes = [...new Set(roles.map((role) => role.ro_type || "N/A"))];
-	const uniqueYears = [
-		...new Set(roles.map((role) => role.ro_acadyear || "N/A")),
-	];
-
-	return {
-		ro_name,
-		ro_type: uniqueTypes.join(", "),
-		ro_acadyear: uniqueYears.join(", "),
-	};
 };
