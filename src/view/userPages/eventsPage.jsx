@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "../../style/userStyle/eventsprojects.css";
-import event from "../../assets/event.png";
 
 import Lottie from "lottie-react";
 import noevent from "../../assets/noevent.json";
@@ -8,6 +7,7 @@ import noevent from "../../assets/noevent.json";
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
+import { FiSearch } from "react-icons/fi";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAlert } from "../context/alertProvider";
@@ -20,16 +20,16 @@ import Footer from "../components/footer";
 function EventsPage() {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { acadYear, loading } = useAcadYear();
 	const { triggerAlert } = useAlert();
-	const { setLoading, setPath } = useLoading();
+	const { acadYear, loading: acadLoading } = useAcadYear();
+	const { setLoading, setPath, loading: appLoading } = useLoading();
 
 	const [activeTab, setActiveTab] = useState("Upcoming");
 	const [events, setEvent] = useState([]);
 	const [search, setSearch] = useState(null);
 
 	useEffect(() => {
-		if (!loading && acadYear) {
+		if (!acadLoading && acadYear) {
 			setPath(location.pathname);
 
 			getEvents(
@@ -43,7 +43,7 @@ function EventsPage() {
 				500
 			);
 		}
-	}, [loading, acadYear, activeTab, search]);
+	}, [acadLoading, acadYear, activeTab, search]);
 	return (
 		<>
 			<div className="user-body event">
@@ -77,6 +77,9 @@ function EventsPage() {
 							</button>
 						</div>
 						<div className="gdg-search-container">
+							<span className="gdg-search-icon">
+								<FiSearch />
+							</span>
 							<input
 								type="text"
 								placeholder="Search Event"
@@ -86,7 +89,7 @@ function EventsPage() {
 							/>
 						</div>
 
-						{events.length === 0 ? (
+						{events.length === 0 && !appLoading ? (
 							<div className="no-event-lottie-container">
 								<Lottie animationData={noevent} loop={true} />
 							</div>
@@ -150,7 +153,7 @@ function EventsPage() {
 											<p className="gdg-event-description">
 												{ev.ev_overview
 													? ev.ev_overview.length > 100
-														? ev.ev_overview.slice(0, 50) + "..."
+														? ev.ev_overview.slice(0, 130) + "..."
 														: ev.ev_overview
 													: " "}
 											</p>

@@ -109,6 +109,8 @@ img.logo-containers {
 	height: 100%;
 	object-fit: cover;
 	border-radius: 20px;
+	border: 1px solid var(--border-color);
+	background-color: var(--img-bg-color);
 }
 
 /* What We Do Section */
@@ -301,6 +303,11 @@ h2.section-title {
 	border: none;
 	border-top-right-radius: 10px;
 	border-top-left-radius: 10px;
+	background-color: var(--img-bg-color);
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .events-section .events-scroll-container .event-details {
@@ -330,10 +337,7 @@ h2.section-title {
 	color: #4285f4;
 	text-decoration: none;
 	font-size: 14px;
-}
-
-.learn-more-link:hover {
-	text-decoration: underline !important;
+	cursor: pointer;
 }
 
 @media (max-width: 1230px) {

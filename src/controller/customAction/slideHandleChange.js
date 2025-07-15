@@ -11,9 +11,9 @@ export const goToSlide = (setCurrentSlide, index) => {
 };
 
 export const handleLoadMore = (loadGallery, setLoadGallery) => {
-	if (loadGallery === 50) {
+	if (loadGallery === 30) {
 		setLoadGallery(10);
 	} else {
-		setLoadGallery(50);
+		setLoadGallery(30);
 	}
 };

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import "../../style/userStyle/home.css";
-import photosImg from "../../assets/photos.png";
 import aboutUsImg from "../../assets/iconlogo.png";
 
 import { IoIosArrowBack } from "react-icons/io";
@@ -99,7 +98,7 @@ function HomePage() {
 							</div>
 							<div className="about-logo">
 								<img
-									src={aboutUsImg}
+									src={acadYear?.ay_photoURL || aboutUsImg}
 									alt="gdsc logo"
 									className="logo-containers"
 								/>
@@ -324,7 +323,7 @@ function HomePage() {
 										{photos.map((ph) => (
 											<div key={ph.id} className="photo-item">
 												<img
-													src={ph.ph_photoURL || { photosImg }}
+													src={ph.ph_photoURL}
 													alt={`Photo from event ${ph.ph_name || ""}`}
 												/>
 											</div>
@@ -337,7 +336,7 @@ function HomePage() {
 												handleLoadMore(loadGallery, setLoadGallery)
 											}
 										>
-											{loadGallery === 50 ? "Load Less" : "Load More"}
+											{loadGallery === 30 ? "Load Less" : "Load More"}
 										</button>
 									)}
 								</div>

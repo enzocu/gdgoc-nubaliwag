@@ -12,7 +12,7 @@ import { useAcadYear } from "../context/acadyearContext";
 import { useLoading } from "../context/loadingProvider";
 
 import { openModal } from "../../controller/customAction/showcloseModal";
-import { getUserRoles } from "../../controller/firebase/get/getUserRoles";
+import { getMembersRoles } from "../../controller/firebase/get/getUserRoles";
 
 function MembersPage() {
 	const location = useLocation();
@@ -26,7 +26,7 @@ function MembersPage() {
 	useEffect(() => {
 		if (!loading && acadYear) {
 			setPath(location.pathname);
-			getUserRoles(acadYear.id, setMember, setLoading, triggerAlert);
+			getMembersRoles(acadYear.id, setMember, setLoading, triggerAlert);
 		}
 	}, [loading, acadYear]);
 
@@ -42,45 +42,13 @@ function MembersPage() {
 							<p>Get to know the faces behind GDG On Campus NU Baliwag.</p>
 						</div>
 					</section>
-					{member["Organization Lead"]?.length > 0 && (
-						<section className="org-lead-section">
-							<div className="section-container">
-								<h2>Organization Lead</h2>
-								<div className="org-lead-content">
-									<div className="org-lead-info">
-										<h3>
-											{member["Organization Lead"][0].user.us_fname}{" "}
-											{member["Organization Lead"][0].user.us_mname}{" "}
-											{member["Organization Lead"][0].user.us_lname}
-										</h3>
-										<p className="member-position">Organization Lead</p>
-										<p className="member-org">
-											Google Developer Groups On Campus
-										</p>
-										<p className="member-school">National University Baliwag</p>
-										<a
-											className="view-profile"
-											onClick={(e) => {
-												e.preventDefault();
-												setProfileDetails(member["Organization Lead"][0]);
-												openModal("profileModal");
-											}}
-										>
-											View Profile
-										</a>
-									</div>
-									<img
-										src={
-											member["Organization Lead"][0].user.us_photoURL ||
-											profileIcon
-										}
-										alt="org-lead-photo"
-										className="org-lead-photo"
-									/>
-								</div>
-							</div>
-						</section>
+
+					{renderSingleRoleSection(
+						"Organization Lead",
+						member,
+						setProfileDetails
 					)}
+					{renderSingleRoleSection("Adviser", member, setProfileDetails)}
 
 					{renderMembers(
 						"Executive Board",
@@ -132,33 +100,95 @@ const renderMembers = (title, description, membersList, setProfileDetails) => {
 					<p className="section-description-member">{description}</p>
 				)}
 				<div className="core-board-grid">
-					{membersList.map((member, index) => (
-						<div className="core-member" key={index}>
-							<img
-								src={member.user.us_photoURL || profileIcon}
-								className="core-photo"
-							/>
-							<div className="core-info">
-								<h3>
-									{member.user.us_fname} {member.user.us_mname}{" "}
-									{member.user.us_lname}
-								</h3>
-								<p className="member-position">{member.ro_name}</p>
-								<p className="member-org">Google Developer Groups On Campus</p>
-								<p className="member-school">National University Baliwag</p>
-								<a
-									className="view-profile"
-									onClick={(e) => {
-										e.preventDefault();
-										setProfileDetails(member);
-										openModal("profileModal");
-									}}
-								>
-									View Profile
-								</a>
+					{membersList.map((member, index) => {
+						const fullName = [
+							member.us_fname,
+							member.us_mname,
+							member.us_lname,
+							member.us_suffix,
+						]
+							.filter(Boolean)
+							.join(" ");
+
+						return (
+							<div className="core-member" key={index}>
+								<img
+									src={member.us_photoURL || profileIcon}
+									alt={fullName || "Profile"}
+									className="core-photo"
+								/>
+								<div className="core-info">
+									<h3>{fullName || "No Name Provided"}</h3>
+									<p className="member-position">{member.ro_name || "N/A"}</p>
+									<p className="member-org">
+										Google Developer Groups On Campus
+									</p>
+									<p className="member-school">National University Baliwag</p>
+									<a
+										href="#"
+										className="view-profile"
+										onClick={(e) => {
+											e.preventDefault();
+											setProfileDetails(member);
+											openModal("profileModal");
+										}}
+									>
+										View Profile
+									</a>
+								</div>
 							</div>
-						</div>
-					))}
+						);
+					})}
+				</div>
+			</div>
+		</section>
+	);
+};
+
+const renderSingleRoleSection = (
+	roleTitle = "Organization Lead",
+	member,
+	setProfileDetails
+) => {
+	const roleData = member[roleTitle]?.[0];
+	if (!roleData) return null;
+
+	const fullName = [
+		roleData.us_fname,
+		roleData.us_mname,
+		roleData.us_lname,
+		roleData.us_suffix,
+	]
+		.filter(Boolean)
+		.join(" ");
+
+	return (
+		<section className="org-lead-section">
+			<div className="section-container">
+				<h2>{roleTitle}</h2>
+				<div className="org-lead-content">
+					<div className="org-lead-info">
+						<h3>{fullName}</h3>
+						<p className="member-position">{roleTitle}</p>
+						<p className="member-org">Google Developer Groups On Campus</p>
+						<p className="member-school">National University Baliwag</p>
+						<a
+							href="#"
+							className="view-profile"
+							onClick={(e) => {
+								e.preventDefault();
+								setProfileDetails(roleData);
+								openModal("profileModal");
+							}}
+						>
+							View Profile
+						</a>
+					</div>
+					<img
+						src={roleData.us_photoURL || profileIcon}
+						alt={`${roleTitle.toLowerCase().replace(/\s/g, "-")}-photo`}
+						className="org-lead-photo"
+					/>
 				</div>
 			</div>
 		</section>

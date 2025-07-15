@@ -17,7 +17,14 @@ const Footer = () => {
 						<h4>Google Developer Groups on Campus</h4>
 						<p>National University Baliwag</p>
 						<ul className="social-icons">
-							<li>
+							<li
+								onClick={() =>
+									window.open(
+										"https://www.facebook.com/GDGoCNUBaliwag",
+										"_blank"
+									)
+								}
+							>
 								<RiFacebookCircleFill />
 							</li>
 							<li>
@@ -60,7 +67,7 @@ const Footer = () => {
 						<MdOutlineMailOutline className="icon" />
 						<div className="contact-info">
 							<h4 className="contact-title">Email</h4>
-							<p className="contact-detail">gdg.nubaliwag@gmail.com</p>
+							<p className="contact-detail">gdsc@nu-baliwag.edu.ph</p>
 						</div>
 					</li>
 
@@ -76,7 +83,7 @@ const Footer = () => {
 						<div className="contact-info">
 							<h4 className="contact-title">Address</h4>
 							<p className="contact-detail">
-								National University - Baliwag Baliwag, Bulacan, Philippines
+								SM Baliwag Complex, Doña Remedios Trinidad, Highway, Brgy.
 							</p>
 						</div>
 					</li>

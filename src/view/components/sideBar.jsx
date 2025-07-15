@@ -4,7 +4,8 @@ import { RxDashboard } from "react-icons/rx";
 
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { MdOutlinePeopleAlt, MdOutlineInsertPhoto } from "react-icons/md";
-import { FiSun, FiMoon, FiUser, FiHelpCircle, FiLogOut } from "react-icons/fi";
+import { FiSun, FiMoon, FiLogOut } from "react-icons/fi";
+import { IoSettingsOutline } from "react-icons/io5";
 
 import AccountSettings from "./boostrap/accountModal";
 
@@ -63,7 +64,7 @@ function SideBar() {
 				</li>
 
 				<li onClick={() => openModal("accountModal")}>
-					<FiUser /> My Account
+					<IoSettingsOutline /> Settings
 				</li>
 
 				<li onClick={() => handleLogout({ navigate, triggerAlert })}>

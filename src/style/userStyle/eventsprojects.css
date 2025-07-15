@@ -18,18 +18,31 @@
 
 /* Search Bar */
 .gdg-search-container {
+	position: relative;
+	width: 100%;
+	max-width: 300px;
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;
 }
 
+.gdg-search-icon {
+	position: absolute;
+	left: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #888;
+	font-size: 18px;
+	pointer-events: none;
+}
+
 .gdg-search-input {
-	width: 250px;
+	padding-left: 40px; /* leave space for the icon */
 }
 
 /* Events Grid */
 .gdg-grid {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(3, 1fr);
 	gap: 30px;
 }
 
@@ -55,7 +68,7 @@
 
 .gdg-event-image {
 	height: 170px;
-	background-color: #f5f5f5;
+	background-color: var(--img-bg-color);
 	position: relative;
 }
 
@@ -125,7 +138,6 @@
 
 /* Details */
 .user-body.eventdetails .event-hero-section {
-	/* remove previous flex centering to let container control layout */
 	height: 400px;
 	position: relative; /* Optional fallback */
 }

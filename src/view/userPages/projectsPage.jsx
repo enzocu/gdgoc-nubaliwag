@@ -2,9 +2,13 @@ import { useState } from "react";
 import "../../style/userStyle/eventsprojects.css";
 import project from "../../assets/project.png";
 
+import Lottie from "lottie-react";
+import maintenance from "../../assets/underMaintenance.json";
+
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { IoTimeOutline } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
+import { FiSearch } from "react-icons/fi";
 
 import Footer from "../components/footer";
 
@@ -17,14 +21,23 @@ function ProjectsPage() {
 				<main>
 					<section className="header-container">
 						<div className="header-content">
-							<h1>Our Projects</h1>
+							<h1>Under Maintenance</h1>
 							<p>
-								Innovative projects created by GDG: On Campus NU Baliwag members
+								The Projects page is currently being updated. Please check back
+								soon for exciting innovations from GDG: On Campus NU Baliwag.
 							</p>
 						</div>
 					</section>
 					<section className="gdg-container">
+						<div className="maintenance-lottie-container">
+							<Lottie animationData={maintenance} loop={true} />
+						</div>
+					</section>
+					{/* <section className="gdg-container">
 						<div className="gdg-search-container">
+							<span className="gdg-search-icon">
+								<FiSearch />
+							</span>
 							<input
 								type="text"
 								placeholder="Search Project"
@@ -145,7 +158,7 @@ function ProjectsPage() {
 								</div>
 							</div>
 						</div>
-					</section>
+					</section> */}
 				</main>
 				<Footer />
 			</div>

@@ -4,10 +4,16 @@ import "../../../style/bootstrapStyle/width.css";
 import profileIcon from "../../../assets/profileicon.jpg";
 
 const ProfileDetails = ({ profileDetails = null }) => {
-	const hasData =
-		profileDetails && profileDetails.user && profileDetails.user.us_studentID;
+	if (!profileDetails || !profileDetails.us_studentID) return null;
 
-	if (!hasData) return null;
+	const fullName = [
+		profileDetails.us_fname,
+		profileDetails.us_mname,
+		profileDetails.us_lname,
+		profileDetails.us_suffix,
+	]
+		.filter(Boolean)
+		.join(" ");
 
 	return (
 		<div
@@ -31,29 +37,26 @@ const ProfileDetails = ({ profileDetails = null }) => {
 						<div className="modal-body">
 							<div className="core-member">
 								<img
-									src={profileDetails.user.us_photoURL || profileIcon}
+									src={profileDetails.us_photoURL || profileIcon}
 									className="core-photo"
+									alt="Profile"
 								/>
 								<div className="core-info">
-									<h3>
-										{profileDetails.user.us_fname}{" "}
-										{profileDetails.user.us_mname}{" "}
-										{profileDetails.user.us_lname}
-									</h3>
+									<h3>{fullName || "No Name Provided"}</h3>
 									<p className="member-position">
-										{profileDetails.ro_name} |{" "}
+										{profileDetails.ro_name || "N/A"} |{" "}
 										<span>
-											{profileDetails.ro_type} {" A.Y "}
-											{profileDetails.ro_acadyear}
+											{profileDetails.ro_type || "Unknown"} {" A.Y "}
+											{profileDetails.us_yearName || "----"}
 										</span>
 									</p>
 									<div className="section-info">
-										<label>Student ID</label>
-										<p>{profileDetails.user.us_studentID}</p>
+										<label>ID</label>
+										<p>{profileDetails.us_studentID || "N/A"}</p>
 									</div>
 									<div className="section-info">
 										<label>Email</label>
-										<p>{profileDetails.user.us_email}</p>
+										<p>{profileDetails.us_email || "N/A"}</p>
 									</div>
 								</div>
 							</div>

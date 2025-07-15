@@ -3,7 +3,6 @@ import { NavLink, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "../../style/adminStyle/photos.css";
-import uxplorer from "../../assets/uxplorer.png";
 
 import { MdAdd } from "react-icons/md";
 import Lottie from "lottie-react";
@@ -116,10 +115,7 @@ function PhotosPage() {
 									>
 										<div className="photos-card">
 											<div className="photos-photo">
-												<img
-													src={ph.ph_photoURL || uxplorer}
-													alt={ph.ph_name || "Photo"}
-												/>
+												<img src={ph.ph_photoURL} alt={ph.ph_name || "Photo"} />
 											</div>
 											<div className="details">
 												<h4>{ph.ph_name || "Untitled"}</h4>

@@ -37,8 +37,8 @@ function ContactPage() {
 										<IoLocationOutline className="gdg-info-icon" />
 										<div>
 											<p className="gdg-info-label">Address</p>
-											<p>National University - Baliwag</p>
-											<p>Baliwag, Bulacan, Philippines</p>
+											<p>SM Baliwag Complex, Doña Remedios Trinidad,</p>
+											<p>Highway, Brgy. Pagala, Baliuag, Bulacan 3006</p>
 										</div>
 									</div>
 
@@ -46,7 +46,7 @@ function ContactPage() {
 										<MdOutlineMailOutline className="gdg-info-icon" />
 										<div>
 											<p className="gdg-info-label">Email</p>
-											<p>gdg.nubaliwag@gmail.com</p>
+											<p>gdsc@nu-baliwag.edu.ph</p>
 										</div>
 									</div>
 

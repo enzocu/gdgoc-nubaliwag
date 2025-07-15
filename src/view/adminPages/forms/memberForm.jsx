@@ -270,7 +270,7 @@ function MembersForm() {
 												"Organization Lead",
 												"Adviser",
 												"Executive Board",
-												"Core Leads",
+												"Core Lead",
 												"Technology Department",
 											].map((role, index) => (
 												<option key={index} value={role}>

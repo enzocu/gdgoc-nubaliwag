@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import "../../style/adminStyle/events.css";
-import uxplorer from "../../assets/uxplorer.png";
 
 import { MdAdd } from "react-icons/md";
 import Lottie from "lottie-react";
@@ -165,7 +164,7 @@ function EventsPage() {
 										<div className="event-card">
 											<div className="event-photo">
 												<img
-													src={ev.ev_photoURL || uxplorer}
+													src={ev.ev_photoURL}
 													alt={ev.ev_name || "Event Image"}
 												/>
 											</div>

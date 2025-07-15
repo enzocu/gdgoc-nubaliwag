@@ -133,7 +133,8 @@ body {
 	width: 250px;
 }
 
-.no-event-lottie-container {
+.no-event-lottie-container,
+.maintenance-lottie-container {
 	width: 300px;
 	height: 300px;
 	margin: 0 auto;
@@ -278,7 +279,7 @@ body {
 
 .footer .contact {
 	flex: none;
-	max-width: 350px;
+	max-width: 400px;
 }
 
 .footer .section-title {
@@ -338,7 +339,7 @@ body {
 	}
 }
 
-@media (max-width: 1050px) {
+@media (max-width: 1160px) {
 	.footer {
 		justify-content: space-between;
 		gap: 50px;

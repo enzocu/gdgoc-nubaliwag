@@ -34,6 +34,7 @@
 	margin-right: 15px;
 	margin-top: 3px;
 	font-size: 20px;
+	flex-shrink: 0;
 }
 
 .gdg-info-label {
@@ -79,7 +80,6 @@
 @media (max-width: 830px) {
 	.gdg-contact-grid {
 		display: flex;
-
 		flex-direction: column-reverse;
 	}
 }

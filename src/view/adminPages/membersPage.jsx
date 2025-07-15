@@ -110,14 +110,15 @@ function MembersPage() {
 											<th>
 												Name <BiSort />
 											</th>
-											<th>Student ID</th>
+											<th>ID</th>
 											<th>Email</th>
-											<th>
-												Role <BiSort />
-											</th>
 											<th>
 												Role Type <BiSort />
 											</th>
+											<th>
+												Role <BiSort />
+											</th>
+
 											<th>Academic Year</th>
 										</tr>
 									</thead>
@@ -125,15 +126,6 @@ function MembersPage() {
 										{member.map((item, index) => {
 											const acad = item.us_acadyear?.[0] || {};
 											const roles = acad.us_role || [];
-
-											const roleNames = roles
-												.map((r) => r.role)
-												.filter(Boolean)
-												.join(", ");
-											const roleTypes = roles
-												.map((r) => r.type)
-												.filter(Boolean)
-												.join(", ");
 
 											return (
 												<tr
@@ -152,7 +144,7 @@ function MembersPage() {
 															/>
 														</div>
 													</td>
-													<td>
+													<td className="min200">
 														{item.us_fname || item.us_mname || item.us_lname
 															? `${item.us_fname || ""} ${
 																	item.us_mname || ""
@@ -161,11 +153,24 @@ function MembersPage() {
 															  }`.trim()
 															: "No name"}
 													</td>
-													<td>{item.us_studentID || "N/A"}</td>
-													<td>{item.us_email || "No email"}</td>
-													<td>{roleNames || "N/A"}</td>
-													<td>{roleTypes || "N/A"}</td>
-													<td>{acad.us_yrname || "N/A"}</td>
+													<td className="min">{item.us_studentID || "N/A"}</td>
+													<td className="min">{item.us_email || "No email"}</td>
+													<td className="min250">
+														<ul className="role-ul">
+															{roles.map((r, i) => (
+																<li key={i}>{r.type || "N/A"}</li>
+															))}
+														</ul>
+													</td>
+													<td className="min250">
+														<ul className="role-ul">
+															{roles.map((r, i) => (
+																<li key={i}>{r.role || "N/A"}</li>
+															))}
+														</ul>
+													</td>
+
+													<td className="min">{acad.us_yrname || "N/A"}</td>
 												</tr>
 											);
 										})}
