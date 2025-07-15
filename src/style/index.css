@@ -5,11 +5,13 @@
 	padding: 0;
 	box-sizing: border-box;
 	transition: color 0.3s ease;
-	scroll-behavior: smooth;
 	scrollbar-width: thin;
 	scrollbar-color: var(--sec-text-color) var(--sec-bg-color);
 }
 
+html {
+	scroll-behavior: smooth;
+}
 ::-webkit-scrollbar {
 	width: 5px;
 	height: 5px;

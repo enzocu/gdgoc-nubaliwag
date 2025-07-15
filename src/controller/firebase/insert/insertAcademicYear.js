@@ -1,10 +1,17 @@
-import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import {
+	addDoc,
+	collection,
+	doc,
+	getDocs,
+	query,
+	updateDoc,
+	where,
+} from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
 
 export async function insertAcademicYear(
 	ay_id,
-	us_id,
 	acadyear,
 	setBtnLoading,
 	triggerAlert
@@ -45,11 +52,19 @@ export async function insertAcademicYear(
 			});
 		}
 
-		const userRef = doc(db, "users", us_id);
-		await updateDoc(userRef, {
-			us_ayID: newDocRef,
-		});
+		const q = query(
+			collection(db, "users"),
+			where("us_status", "==", "Active"),
+			where("us_type", "==", "Super Admin")
+		);
 
+		const querySnapshot = await getDocs(q);
+		for (const docSnap of querySnapshot.docs) {
+			const userRef = doc(db, "users", docSnap.id);
+			await updateDoc(userRef, {
+				us_ayID: newDocRef,
+			});
+		}
 		triggerAlert("success", "Academic year added successfully.");
 	} catch (error) {
 		triggerAlert("danger", "Error adding academic year: " + error.message);
