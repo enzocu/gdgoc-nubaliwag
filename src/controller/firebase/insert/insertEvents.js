@@ -37,7 +37,7 @@ export const insertEvent = async (
 		const now = new Date();
 
 		const eventData = {
-			ev_ayID: doc(db, "academicyear", event.ev_ayID),
+			ev_ayID: doc(db, "academicyear", ay_id),
 			ev_organizer: organizers.map((org) => `${org.or_id}|${org.or_name}`),
 			ev_status: eventDateTime > now ? "Upcoming" : "Completed",
 			ev_type: event.ev_type || "",
@@ -107,9 +107,9 @@ export const insertEvent = async (
 				organizer.or_email,
 				eventPhotoURL,
 				event.ev_name,
-				event.ev_date,
-				event.ev_starttime,
-				event.ev_endtime,
+				formatDate(event.ev_date),
+				formatTime(event.ev_starttime),
+				formatTime(event.ev_endtime),
 				event.ev_location,
 				event.ev_overview,
 				docRef.id,
@@ -127,3 +127,7 @@ export const insertEvent = async (
 		setBtnloading(false);
 	}
 };
+
+// Utility functions for date/time formatting
+const formatDate = (date) => date.toDate().toISOString().split("T")[0];
+const formatTime = (date) => date.toDate().toTimeString().slice(0, 5);
