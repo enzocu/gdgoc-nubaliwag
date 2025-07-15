@@ -22,7 +22,7 @@ import {
 	prevSlide,
 } from "../../controller/customAction/slideHandleChange";
 
-import getEvents from "../../controller/firebase/get/getEvents";
+import { getEvents } from "../../controller/firebase/get/getEvents";
 import getPhotos from "../../controller/firebase/get/getPhotos";
 import Footer from "../components/footer";
 
@@ -79,7 +79,17 @@ function HomePage() {
 									networking at National University - Baliwag
 								</p>
 
-								<button className="learn-more-btn">Learn More</button>
+								<button
+									className="learn-more-btn"
+									onClick={() => {
+										const aboutSection = document.getElementById("about");
+										if (aboutSection) {
+											aboutSection.scrollIntoView({ behavior: "smooth" });
+										}
+									}}
+								>
+									Learn More
+								</button>
 							</div>
 							<div></div>
 						</div>

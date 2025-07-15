@@ -16,6 +16,7 @@ import {
 } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
 import { toTimestamp } from "../../customAction/toTimestamp";
+import { sendOrganizerEmail } from "../../customAction/sendEmail";
 
 export const updateEvent = async (
 	eventId,
@@ -122,7 +123,6 @@ export const updateEvent = async (
 				const photoRef = doc(db, "photos", ga.ga_id);
 
 				if (ga.ga_status === "Inactive") {
-					// Delete image from storage
 					if (
 						typeof ga.ga_photoURL === "string" &&
 						ga.ga_photoURL.includes("firebase")
@@ -150,6 +150,24 @@ export const updateEvent = async (
 					ph_status: ga.ga_status || "Active",
 					ph_create_timestamp: serverTimestamp(),
 				});
+			}
+		}
+
+		for (const organizer of organizers) {
+			if (organizer.or_email) {
+				sendOrganizerEmail(
+					organizer.or_name,
+					organizer.or_email,
+					eventPhotoURL,
+					event.ev_name,
+					event.ev_date,
+					event.ev_starttime,
+					event.ev_endtime,
+					event.ev_location,
+					event.ev_overview,
+					eventId,
+					triggerAlert
+				);
 			}
 		}
 

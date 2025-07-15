@@ -47,7 +47,7 @@
 	--bg-text-field: white;
 
 	--color-shadow: rgba(71, 70, 70, 0.1);
-	--img-bg-color: #e0e0e0;
+	--img-bg-color: #f0f0f0;
 }
 
 [data-theme="dark"] {
@@ -64,7 +64,7 @@
 	--bg-text-field: #252628;
 
 	--color-shadow: rgba(114, 110, 110, 0.1);
-	--img-bg-color: #3a3a3a;
+	--img-bg-color: #232323;
 }
 
 a {
@@ -325,6 +325,57 @@ body {
 	color: var(--bg-button-color);
 	flex-shrink: 0;
 	margin-top: 2px;
+}
+
+.pagination-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 1.5rem;
+}
+
+.page-select-group,
+.page-nav-group {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.page-label {
+	color: var(--text-color);
+	font-size: 12px;
+}
+
+.page-select {
+	border: none;
+	background: none;
+	color: var(--text-color);
+	border-radius: 4px;
+	padding: 4px 8px;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.page-btn {
+	background-color: transparent;
+	border: none;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	cursor: pointer;
+	transition: background-color 0.2s;
+	border-radius: 4px;
+}
+
+.page-btn:disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
+.page-icon {
+	width: 20px;
+	height: 20px;
+	color: var(--text-color);
 }
 
 @media (max-width: 1220px) {

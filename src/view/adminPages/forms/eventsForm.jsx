@@ -289,7 +289,7 @@ function EventsForm() {
 											{organizerlist.map((item, index) => (
 												<option
 													key={index}
-													value={`${item.id}|${item.us_fname} ${item.us_lname}`}
+													value={`${item.id}|${item.us_fname} ${item.us_lname}|${item.us_email}`}
 												>
 													{item.us_fname} {item.us_lname}
 												</option>

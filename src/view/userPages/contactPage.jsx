@@ -1,11 +1,43 @@
+import React, { useState } from "react";
 import "../../style/userStyle/contacts.css";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { LuPhone } from "react-icons/lu";
 
 import Footer from "../components/footer";
+import { useAlert } from "../context/alertProvider";
+import { handleChange } from "../../controller/customAction/handleChange";
+import { sendContactUsEmail } from "../../controller/customAction/sendEmail";
+
+const defaultContact = {
+	co_name: "",
+	co_email: "",
+	co_inquiry: "",
+	co_subject: "",
+	co_message: "",
+};
 
 function ContactPage() {
+	const { triggerAlert } = useAlert();
+	const [btnloading, setBtnloading] = useState(false);
+	const [contact, setContact] = useState(defaultContact);
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+
+		sendContactUsEmail(
+			contact.co_name,
+			contact.co_email,
+			contact.co_inquiry,
+			contact.co_subject,
+			contact.co_message,
+			triggerAlert,
+			setBtnloading
+		);
+		// Reset form after submission
+		setContact(defaultContact);
+	};
+
 	return (
 		<>
 			<div className="user-body contact">
@@ -68,7 +100,7 @@ function ContactPage() {
 									possible.
 								</p>
 
-								<form className="gdg-contact-form">
+								<form className="gdg-contact-form" onSubmit={handleSubmit}>
 									<div className="gdg-form-row">
 										<div className="gdg-form-group">
 											<label htmlFor="name">Name</label>
@@ -77,6 +109,10 @@ function ContactPage() {
 												id="name"
 												placeholder="Your Name"
 												className="form-control"
+												name="co_name"
+												required
+												value={contact.co_name || ""}
+												onChange={(e) => handleChange(e, setContact)}
 											/>
 										</div>
 
@@ -87,14 +123,25 @@ function ContactPage() {
 												id="email"
 												placeholder="Your Email"
 												className="form-control"
+												name="co_email"
+												required
+												value={contact.co_email || ""}
+												onChange={(e) => handleChange(e, setContact)}
 											/>
 										</div>
 									</div>
 
 									<div className="gdg-form-group">
 										<label htmlFor="inquiryType">Inquiry Type</label>
-										<select id="inquiryType" className="form-control">
-											<option>Inquiry Type</option>
+										<select
+											id="inquiryType"
+											className="form-control"
+											name="co_inquiry"
+											required
+											value={contact.co_inquiry || ""}
+											onChange={(e) => handleChange(e, setContact)}
+										>
+											<option value="">Inquiry Type</option>
 											<option value="general">General Inquiry</option>
 											<option value="membership">Membership</option>
 											<option value="events">Events</option>
@@ -109,6 +156,10 @@ function ContactPage() {
 											id="subject"
 											placeholder="Subject of Your Message"
 											className="form-control"
+											name="co_subject"
+											required
+											value={contact.co_subject || ""}
+											onChange={(e) => handleChange(e, setContact)}
 										/>
 									</div>
 
@@ -119,11 +170,19 @@ function ContactPage() {
 											rows="5"
 											placeholder="Your Message"
 											className="form-control"
+											name="co_message"
+											required
+											value={contact.co_message || ""}
+											onChange={(e) => handleChange(e, setContact)}
 										></textarea>
 									</div>
 
 									<button type="submit" className="btn gdg-send-message-btn">
-										Send Message
+										{btnloading ? (
+											<span className="spinner-border spinner-border-sm"></span>
+										) : (
+											"Send Message"
+										)}
 									</button>
 								</form>
 							</div>

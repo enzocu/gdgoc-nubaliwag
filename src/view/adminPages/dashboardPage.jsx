@@ -14,7 +14,7 @@ import { useUser } from "../context/userContext";
 import { useLoading } from "../context/loadingProvider";
 
 import { getAcademicYearMatch } from "../../controller/firebase/get/getAcademicYearMatch";
-import getEvents from "../../controller/firebase/get/getEvents";
+import { getEvents } from "../../controller/firebase/get/getEvents";
 import { getMembers } from "../../controller/firebase/get/getCoreMembers";
 
 import {

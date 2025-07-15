@@ -8,6 +8,7 @@ import {
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
 import { toTimestamp } from "../../customAction/toTimestamp";
+import { sendOrganizerEmail } from "../../customAction/sendEmail";
 
 export const insertEvent = async (
 	ay_id,
@@ -98,6 +99,22 @@ export const insertEvent = async (
 				ph_create_timestamp: serverTimestamp(),
 			};
 			await addDoc(collection(db, "photos"), galleryData);
+		}
+
+		for (const organizer of organizers) {
+			sendOrganizerEmail(
+				organizer.or_name,
+				organizer.or_email,
+				eventPhotoURL,
+				event.ev_name,
+				event.ev_date,
+				event.ev_starttime,
+				event.ev_endtime,
+				event.ev_location,
+				event.ev_overview,
+				docRef.id,
+				triggerAlert
+			);
 		}
 
 		triggerAlert("success", "Event successfully registered!");
