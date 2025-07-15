@@ -102,7 +102,7 @@ export const insertEvent = async (
 		}
 
 		for (const organizer of organizers) {
-			sendOrganizerEmail(
+			await sendOrganizerEmail(
 				organizer.or_name,
 				organizer.or_email,
 				eventPhotoURL,
@@ -129,5 +129,23 @@ export const insertEvent = async (
 };
 
 // Utility functions for date/time formatting
-const formatDate = (date) => date.toDate().toISOString().split("T")[0];
-const formatTime = (date) => date.toDate().toTimeString().slice(0, 5);
+const formatDate = (dateStr) => {
+	if (!dateStr) return "";
+	const date = new Date(dateStr);
+	return date.toLocaleDateString("en-US", {
+		month: "short",
+		day: "2-digit",
+		year: "numeric",
+	});
+};
+const formatTime = (timeStr) => {
+	if (!timeStr) return "";
+	const [hour, minute] = timeStr.split(":");
+	const date = new Date();
+	date.setHours(+hour, +minute);
+	return date.toLocaleTimeString("en-US", {
+		hour: "numeric",
+		minute: "2-digit",
+		hour12: true,
+	});
+};

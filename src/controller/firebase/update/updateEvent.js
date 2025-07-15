@@ -155,7 +155,7 @@ export const updateEvent = async (
 
 		for (const organizer of organizers) {
 			if (organizer.or_email) {
-				sendOrganizerEmail(
+				await sendOrganizerEmail(
 					organizer.or_name,
 					organizer.or_email,
 					eventPhotoURL,

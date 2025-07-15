@@ -1,7 +1,7 @@
 import emailjs from "emailjs-com";
 const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-export function sendOrganizerEmail(
+export async function sendOrganizerEmail(
 	us_name,
 	us_email,
 	ev_photoURL,
@@ -30,14 +30,14 @@ export function sendOrganizerEmail(
 		event_id,
 	};
 
-	emailjs
-		.send(serviceID, templateID, templateParams, publicKey)
-		.catch((error) => {
-			console.error("❌ Email send failed:", error);
-			if (typeof triggerAlert === "function") {
-				triggerAlert("warning", "Error sending email: " + error.message);
-			}
-		});
+	try {
+		await emailjs.send(serviceID, templateID, templateParams, publicKey);
+	} catch (error) {
+		console.error("❌ Email send failed:", error);
+		if (typeof triggerAlert === "function") {
+			triggerAlert("warning", "Error sending email: " + error.message);
+		}
+	}
 }
 
 export function sendContactUsEmail(
