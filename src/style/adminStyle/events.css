@@ -61,26 +61,26 @@
 
 .content-page.events .event-type,
 .content-details.events .event-type {
-	background-color: #f1f5f9;
-	color: #656f76;
+	background-color: #525252;
+	color: #ffffff;
 }
 
 .content-page.events .event-Completed,
 .content-details.events .event-Completed {
-	background-color: #d2f3db;
-	color: #28aa4b;
+	background-color: #108d10;
+	color: #ffffff !important;
 }
 
 .content-page.events .event-Upcoming,
 .content-details.events .event-Upcoming {
-	background-color: #d2f3db;
-	color: #0f3169;
+	background-color: #108d10;
+	color: #ffffff !important;
 }
 
 .content-page.events .event-Archived,
 .content-details.events .event-Archived {
-	background-color: #ffbeb8;
-	color: #ea4335;
+	background-color: #781717;
+	color: #ffffff;
 }
 
 .content-page.events .event-card .details {

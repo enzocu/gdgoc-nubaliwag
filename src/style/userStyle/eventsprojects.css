@@ -191,13 +191,13 @@
 }
 
 .event-title-container .event-Completed {
-	background-color: #d2f3db;
-	color: #28aa4b;
+	background-color: #108d10;
+	color: #ffffff !important;
 }
 
 .event-title-container .event-Upcoming {
-	background-color: #bdd6ff;
-	color: #0f3169 !important;
+	background-color: #108d10;
+	color: #ffffff !important;
 }
 
 .event-content {
