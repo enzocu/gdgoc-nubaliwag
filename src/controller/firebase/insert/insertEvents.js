@@ -17,8 +17,7 @@ export const insertEvent = async (
 	speakers,
 	gallery,
 	triggerAlert,
-	setBtnloading,
-	navigate
+	setBtnloading
 ) => {
 	try {
 		setBtnloading(true);
@@ -118,7 +117,6 @@ export const insertEvent = async (
 		}
 
 		triggerAlert("success", "Event successfully registered!");
-		navigate("/admin/events/eventsdetails?id=" + docRef.id);
 		return docRef.id;
 	} catch (error) {
 		triggerAlert("danger", "Error inserting event: " + error.message);

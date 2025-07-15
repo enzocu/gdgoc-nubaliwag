@@ -83,16 +83,16 @@ function EventsForm() {
 		e.preventDefault();
 
 		if (action == "add") {
+			let id = null;
 			if (!loading && user && userDetails) {
-				await insertEvent(
+				id = await insertEvent(
 					userDetails.us_ayID.id,
 					event,
 					organizer,
 					speaker,
 					gallery,
 					triggerAlert,
-					setBtnloading,
-					navigate
+					setBtnloading
 				);
 			}
 
@@ -100,6 +100,10 @@ function EventsForm() {
 			setOrganizer([]);
 			setSpeaker([]);
 			setGallery([]);
+
+			if (id) {
+				navigate("/admin/events/eventsdetails?id=" + id);
+			}
 		} else if (action == "edit" && id) {
 			if (!loading && user && userDetails) {
 				await updateEvent(
@@ -165,7 +169,7 @@ function EventsForm() {
 						<div className="form-subgroup form-subgroup-event-details">
 							<div className="form-row-name-type">
 								<div className="form-field">
-									<label>Event Name </label>
+									<label>Event Name</label>
 									<input
 										type="text"
 										className="form-control"
