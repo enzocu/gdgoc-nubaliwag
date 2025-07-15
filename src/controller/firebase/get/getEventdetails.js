@@ -22,7 +22,8 @@ export const getEventDetails = (
 	setGallery,
 	triggerAlert,
 	setLoading,
-	isForm = true
+	isForm = true,
+	navigate
 ) => {
 	try {
 		setLoading(true);
@@ -36,6 +37,7 @@ export const getEventDetails = (
 				try {
 					if (!docSnapshot.exists()) {
 						triggerAlert?.("danger", `No event found with ID: ${ev_id}`);
+						navigate("/");
 						return;
 					}
 
@@ -78,6 +80,7 @@ export const getEventDetails = (
 		return unsubscribe;
 	} catch (error) {
 		triggerAlert?.("danger", `Unexpected error: ${error.message}`);
+		navigate("/");
 		setLoading(false);
 	}
 };

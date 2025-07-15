@@ -59,7 +59,8 @@ function EventsDetails() {
 				setGallery,
 				triggerAlert,
 				setLoading,
-				false
+				false,
+				navigate
 			);
 
 			return () => unsubscribe();

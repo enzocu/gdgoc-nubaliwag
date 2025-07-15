@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, useLocation } from "react-router-dom";
+import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import "../../../style/userStyle/eventsprojects.css";
 import photosImg from "../../../assets/banner.png";
 import profileIcon from "../../../assets/profileicon.jpg";
@@ -45,6 +45,7 @@ const defaultEvent = {
 
 function EventsDetailsPage() {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const { triggerAlert } = useAlert();
 	const { setLoading, setPath } = useLoading();
 
@@ -71,7 +72,8 @@ function EventsDetailsPage() {
 				setPhoto,
 				triggerAlert,
 				setLoading,
-				false
+				false,
+				navigate
 			);
 
 			return () => unsubscribe();
