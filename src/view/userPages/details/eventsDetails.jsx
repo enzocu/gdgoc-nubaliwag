@@ -182,7 +182,7 @@ function EventsDetailsPage() {
 					{speaker.length > 0 && (
 						<section className="spearker-section">
 							<div className="section-container">
-								<h2>Event Speakers</h2>
+								<h2>Event Speaker{speaker?.length > 1 ? "s" : ""}</h2>
 								<div className="speaker-grid">
 									{speaker.map((sp, index) => (
 										<div className="speaker-member" key={index}>
