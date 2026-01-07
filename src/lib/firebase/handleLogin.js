@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../server/firebaseConfig";
-import { closeModal } from "../customAction/showcloseModal";
+import { closeModal } from "../helper/showcloseModal";
 
 export async function handleLogin({
 	email,
@@ -14,7 +14,7 @@ export async function handleLogin({
 		const userCredential = await signInWithEmailAndPassword(
 			auth,
 			email,
-			password
+			password,
 		);
 		const user = userCredential.user;
 
@@ -22,7 +22,7 @@ export async function handleLogin({
 
 		triggerAlert(
 			"success",
-			`Welcome to Google Developer Student Clubs!\n\nEmail: ${user.email}`
+			`Welcome to Google Developer Student Clubs!\n\nEmail: ${user.email}`,
 		);
 		navigate("/admin/dashboard");
 	} catch (error) {

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import "../../style/userStyle/eventsprojects.css";
 
-import Lottie from "lottie-react";
-import noevent from "../../assets/noevent.json";
+import LottieLoader from "../components/lottieLoader";
 
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { IoTimeOutline } from "react-icons/io5";
@@ -10,14 +9,11 @@ import { IoLocationOutline } from "react-icons/io5";
 import { FiSearch, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAlert } from "../context/alertProvider";
-import { useAcadYear } from "../context/acadyearContext";
-import { useLoading } from "../context/loadingProvider";
+import { useAlert } from "../../provider/alertProvider";
+import { useAcadYear } from "../../provider/acadyearProvider";
+import { useLoading } from "../../provider/loadingProvider";
 
-import {
-	getEvents,
-	getEventCount,
-} from "../../controller/firebase/get/getEvents";
+import { getEvents, getEventCount } from "../../lib/firebase/get/getEvents";
 import Footer from "../components/footer";
 
 function EventsPage() {
@@ -53,7 +49,7 @@ function EventsPage() {
 				pageLimit,
 				pageCursors,
 				setPageCursors,
-				currentPage
+				currentPage,
 			);
 		}
 	}, [acadLoading, acadYear, activeTab, search, nextPage]);
@@ -116,7 +112,7 @@ function EventsPage() {
 
 						{events.length === 0 && !appLoading ? (
 							<div className="no-event-lottie-container">
-								<Lottie animationData={noevent} loop={true} />
+								<LottieLoader path="/assets/json/noevent.json" loop={true} />
 							</div>
 						) : (
 							<>
@@ -143,7 +139,7 @@ function EventsPage() {
 														<span>
 															{ev.ev_date
 																? new Date(
-																		ev.ev_date.seconds * 1000
+																		ev.ev_date.seconds * 1000,
 																  ).toLocaleDateString(undefined, {
 																		year: "numeric",
 																		month: "long",
@@ -157,12 +153,12 @@ function EventsPage() {
 														<span>
 															{ev.ev_starttime && ev.ev_endtime
 																? `${new Date(
-																		ev.ev_starttime.seconds * 1000
+																		ev.ev_starttime.seconds * 1000,
 																  ).toLocaleTimeString([], {
 																		hour: "2-digit",
 																		minute: "2-digit",
 																  })} - ${new Date(
-																		ev.ev_endtime.seconds * 1000
+																		ev.ev_endtime.seconds * 1000,
 																  ).toLocaleTimeString([], {
 																		hour: "2-digit",
 																		minute: "2-digit",
@@ -233,7 +229,7 @@ function EventsPage() {
 												className="page-btn"
 												onClick={() => {
 													setCurrentPage((prev) =>
-														Math.min(prev + 1, ctrPages)
+														Math.min(prev + 1, ctrPages),
 													);
 													setNextPage(nextPage + 1);
 												}}

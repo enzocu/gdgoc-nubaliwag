@@ -1,5 +1,5 @@
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { closeModal } from "../../customAction/showcloseModal";
+import { closeModal } from "../../helper/showcloseModal";
 
 export const resetUserPassword = async (triggerAlert, setLoading) => {
 	try {

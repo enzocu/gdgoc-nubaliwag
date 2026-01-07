@@ -6,18 +6,18 @@ import { VscLinkExternal } from "react-icons/vsc";
 import HeaderFormAdmin from "../../../view/components/headerFormAdmin";
 import UrlUpload from "../../components/boostrap/urlModal";
 
-import { useAlert } from "../../context/alertProvider";
-import { useUser } from "../../context/userContext";
-import { useLoading } from "../../context/loadingProvider";
+import { useAlert } from "../../../provider/alertProvider";
+import { useUser } from "../../../provider/userProvider";
+import { useLoading } from "../../../provider/loadingProvider";
 
-import { handleChange } from "../../../controller/customAction/handleChange";
-import { openModal } from "../../../controller/customAction/showcloseModal";
+import { handleChange } from "../../../lib/helper/handleChange";
+import { openModal } from "../../../lib/helper/showcloseModal";
 
-import { insertPhoto } from "../../../controller/firebase/insert/insertPhoto";
-import { updatePhoto } from "../../../controller/firebase/update/updatePhoto";
-import { deletePhoto } from "../../../controller/firebase/delete/deletePhoto";
-import { getPhotodetails } from "../../../controller/firebase/get/getPhotodetails";
-import { getAcademicYears } from "../../../controller/firebase/get/getAcademicYears";
+import { insertPhoto } from "../../../lib/firebase/insert/insertPhoto";
+import { updatePhoto } from "../../../lib/firebase/update/updatePhoto";
+import { deletePhoto } from "../../../lib/firebase/delete/deletePhoto";
+import { getPhotodetails } from "../../../lib/firebase/get/getPhotodetails";
+import { getAcademicYears } from "../../../lib/firebase/get/getAcademicYears";
 
 const defaultPhoto = {
 	ph_ayID: "",
@@ -77,7 +77,7 @@ function PhotosForm() {
 				id,
 				setPhoto,
 				triggerAlert,
-				setLoading
+				setLoading,
 			);
 			return () => unsubscribe();
 		}

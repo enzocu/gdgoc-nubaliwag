@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import Lottie from "lottie-react";
-import authAnimation from "../../assets/googleLoading.json";
+import LottieLoader from "../view/components/lottieLoader";
 import { useAlert } from "./alertProvider";
 
-import { auth, db } from "../../server/firebaseConfig";
+import { auth, db } from "../server/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -44,7 +43,7 @@ export const UserProvider = ({ children }) => {
 					setUserDetails({});
 					triggerAlert(
 						"danger",
-						error.message || "An error occurred. Please try again."
+						error.message || "An error occurred. Please try again.",
 					);
 				}
 			} else {
@@ -61,7 +60,11 @@ export const UserProvider = ({ children }) => {
 		<UserContext.Provider value={{ user, userDetails, loading }}>
 			{loading ? (
 				<div className="authloading-container">
-					<Lottie animationData={authAnimation} loop={true} className="auth" />
+					<LottieLoader
+						path="/assets/json/googleLoading.json"
+						loop={true}
+						className="auth"
+					/>
 				</div>
 			) : (
 				children

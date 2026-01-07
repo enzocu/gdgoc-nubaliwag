@@ -7,8 +7,8 @@ import {
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
-import { toTimestamp } from "../../customAction/toTimestamp";
-import { sendOrganizerEmail } from "../../customAction/sendEmail";
+import { toTimestamp } from "../../helper/toTimestamp";
+import { sendOrganizerEmail } from "../../helper/sendEmail";
 
 export const insertEvent = async (
 	ay_id,
@@ -17,7 +17,7 @@ export const insertEvent = async (
 	speakers,
 	gallery,
 	triggerAlert,
-	setBtnloading
+	setBtnloading,
 ) => {
 	try {
 		setBtnloading(true);
@@ -112,7 +112,7 @@ export const insertEvent = async (
 				event.ev_location,
 				event.ev_overview,
 				docRef.id,
-				triggerAlert
+				triggerAlert,
 			);
 		}
 

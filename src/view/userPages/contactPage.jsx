@@ -5,9 +5,9 @@ import { MdOutlineMailOutline } from "react-icons/md";
 import { LuPhone } from "react-icons/lu";
 
 import Footer from "../components/footer";
-import { useAlert } from "../context/alertProvider";
-import { handleChange } from "../../controller/customAction/handleChange";
-import { sendContactUsEmail } from "../../controller/customAction/sendEmail";
+import { useAlert } from "../../provider/alertProvider";
+import { handleChange } from "../../lib/helper/handleChange";
+import { sendContactUsEmail } from "../../lib/helper/sendEmail";
 
 const defaultContact = {
 	co_name: "",
@@ -32,7 +32,7 @@ function ContactPage() {
 			contact.co_subject,
 			contact.co_message,
 			triggerAlert,
-			setBtnloading
+			setBtnloading,
 		);
 		// Reset form after submission
 		setContact(defaultContact);

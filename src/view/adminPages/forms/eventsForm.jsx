@@ -6,31 +6,31 @@ import { RxCross2 } from "react-icons/rx";
 import { VscLinkExternal } from "react-icons/vsc";
 import { MdDeleteForever } from "react-icons/md";
 
-import upload from "../../../assets/upload.png";
+const upload = "/assets/images/upload.png";
 
 import HeaderFormAdmin from "../../../view/components/headerFormAdmin";
 
-import { useAlert } from "../../context/alertProvider";
-import { useUser } from "../../context/userContext";
-import { useLoading } from "../../context/loadingProvider";
+import { useAlert } from "../../../provider/alertProvider";
+import { useUser } from "../../../provider/userProvider";
+import { useLoading } from "../../../provider/loadingProvider";
 
-import { handleChange } from "../../../controller/customAction/handleChange";
-import { organizerChange } from "../../../controller/customAction/organizerChange";
+import { handleChange } from "../../../lib/helper/handleChange";
+import { organizerChange } from "../../../lib/helper/organizerChange";
 import {
 	speakerChange,
 	selectedSpeaker,
 	updateSpeaker,
-} from "../../../controller/customAction/speakerChange";
-import { galleryChange } from "../../../controller/customAction/galleryChange";
-import { toggleStatus } from "../../../controller/customAction/toggleStatus";
+} from "../../../lib/helper/speakerChange";
+import { galleryChange } from "../../../lib/helper/galleryChange";
+import { toggleStatus } from "../../../lib/helper/toggleStatus";
 import UrlUpload from "../../components/boostrap/urlModal";
 
-import { insertEvent } from "../../../controller/firebase/insert/insertEvents";
-import { updateEvent } from "../../../controller/firebase/update/updateEvent";
-import { getEventDetails } from "../../../controller/firebase/get/getEventdetails";
-import { getMembers } from "../../../controller/firebase/get/getCoreMembers";
-import { getAcademicYears } from "../../../controller/firebase/get/getAcademicYears";
-import { openModal } from "../../../controller/customAction/showcloseModal";
+import { insertEvent } from "../../../lib/firebase/insert/insertEvents";
+import { updateEvent } from "../../../lib/firebase/update/updateEvent";
+import { getEventDetails } from "../../../lib/firebase/get/getEventdetails";
+import { getMembers } from "../../../lib/firebase/get/getCoreMembers";
+import { getAcademicYears } from "../../../lib/firebase/get/getAcademicYears";
+import { openModal } from "../../../lib/helper/showcloseModal";
 
 const defaultEvent = {
 	ev_ayID: "",
@@ -92,7 +92,7 @@ function EventsForm() {
 					speaker,
 					gallery,
 					triggerAlert,
-					setBtnloading
+					setBtnloading,
 				);
 			}
 
@@ -114,7 +114,7 @@ function EventsForm() {
 					gallery,
 					triggerAlert,
 					setBtnloading,
-					navigate
+					navigate,
 				);
 			}
 		}
@@ -131,7 +131,7 @@ function EventsForm() {
 				setGallery,
 				triggerAlert,
 				setLoading,
-				true
+				true,
 			);
 
 			return () => unsubscribe();
@@ -147,7 +147,7 @@ function EventsForm() {
 				setOrganizerlist,
 				setLoading,
 				triggerAlert,
-				100
+				100,
 			);
 		}
 	}, [event.ev_ayID]);
@@ -285,7 +285,7 @@ function EventsForm() {
 													e.target.value,
 													organizer,
 													setOrganizer,
-													setEvent
+													setEvent,
 												)
 											}
 										>
@@ -476,7 +476,7 @@ function EventsForm() {
 																index,
 																setSpeaker,
 																"sp_id",
-																"sp_status"
+																"sp_status",
 															)
 														}
 													/>

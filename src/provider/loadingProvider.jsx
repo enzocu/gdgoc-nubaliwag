@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import Lottie from "lottie-react";
-import loadingAnimation from "../../assets/loading.json";
+import LottieLoader from "../view/components/lottieLoader";
 const LoadingContext = createContext();
 
 export const useLoading = () => useContext(LoadingContext);
@@ -27,7 +26,7 @@ export const LoadingProvider = ({ children }) => {
 			<>
 				{loading && (
 					<div className="loading-container">
-						<Lottie animationData={loadingAnimation} loop={true} />
+						<LottieLoader path="/assets/json/loading.json" loop={true} />
 					</div>
 				)}
 				{children}

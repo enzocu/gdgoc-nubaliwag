@@ -1,12 +1,12 @@
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
-import { closeModal } from "../../customAction/showcloseModal";
+import { closeModal } from "../../helper/showcloseModal";
 
 export const updateEventStatus = async (
 	eventId,
 	newStatus,
 	triggerAlert,
-	setLoading
+	setLoading,
 ) => {
 	try {
 		setLoading(true);

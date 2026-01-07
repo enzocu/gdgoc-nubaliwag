@@ -8,23 +8,23 @@ import UrlUpload from "../../components/boostrap/urlModal";
 
 import { RxCross2 } from "react-icons/rx";
 
-import { useAlert } from "../../context/alertProvider";
-import { useUser } from "../../context/userContext";
-import { useLoading } from "../../context/loadingProvider";
+import { useAlert } from "../../../provider/alertProvider";
+import { useUser } from "../../../provider/userProvider";
+import { useLoading } from "../../../provider/loadingProvider";
 
-import { handleChange } from "../../../controller/customAction/handleChange";
+import { handleChange } from "../../../lib/helper/handleChange";
 import {
 	roleChange,
 	selectedMember,
 	removeMember,
-} from "../../../controller/customAction/roleChange";
+} from "../../../lib/helper/roleChange";
 
-import { openModal } from "../../../controller/customAction/showcloseModal";
+import { openModal } from "../../../lib/helper/showcloseModal";
 
-import { insertMember } from "../../../controller/firebase/insert/insertMember";
-import { updateMember } from "../../../controller/firebase/update/updateMember";
-import { getMemberdetails } from "../../../controller/firebase/get/getMemberdetails";
-import { getAcademicYears } from "../../../controller/firebase/get/getAcademicYears";
+import { insertMember } from "../../../lib/firebase/insert/insertMember";
+import { updateMember } from "../../../lib/firebase/update/updateMember";
+import { getMemberdetails } from "../../../lib/firebase/get/getMemberdetails";
+import { getAcademicYears } from "../../../lib/firebase/get/getAcademicYears";
 
 const defaultMember = {
 	me_acadyear: [],
@@ -80,7 +80,7 @@ function MembersForm() {
 					id,
 					member,
 					triggerAlert,
-					setBtnloading
+					setBtnloading,
 				);
 			}
 		}
@@ -95,7 +95,7 @@ function MembersForm() {
 				id,
 				setMember,
 				triggerAlert,
-				setLoading
+				setLoading,
 			);
 
 			return () => unsubscribe();
@@ -173,7 +173,7 @@ function MembersForm() {
 											onChange={(e) => handleChange(e, setMember)}
 											required={field !== "me_suffix"}
 										/>
-									)
+									),
 								)}
 							</div>
 						</div>
@@ -348,7 +348,7 @@ function MembersForm() {
 															onClick={() => removeMember(i, j, setMember)}
 														/>
 													</li>
-												))
+												)),
 											)}
 										</ul>
 									</div>

@@ -9,10 +9,10 @@ import { IoSettingsOutline } from "react-icons/io5";
 
 import AccountSettings from "./boostrap/accountModal";
 
-import useTheme from "../../controller/customAction/useTheme";
-import { useAlert } from "../context/alertProvider";
-import { openModal } from "../../controller/customAction/showcloseModal";
-import { handleLogout } from "../../controller/firebase/handleLogout";
+import useTheme from "../../lib/helper/useTheme";
+import { useAlert } from "../../provider/alertProvider";
+import { openModal } from "../../lib/helper/showcloseModal";
+import { handleLogout } from "../../lib/firebase/handleLogout";
 
 function SideBar() {
 	const navigate = useNavigate();

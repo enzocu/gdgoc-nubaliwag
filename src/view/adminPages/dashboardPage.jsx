@@ -9,19 +9,19 @@ import { IoArrowForwardSharp } from "react-icons/io5";
 import SideBar from "../components/sideBar";
 import HeaderPageAdmin from "../components/headerPageAdmin";
 
-import { useAlert } from "../context/alertProvider";
-import { useUser } from "../context/userContext";
-import { useLoading } from "../context/loadingProvider";
+import { useAlert } from "../../provider/alertProvider";
+import { useUser } from "../../provider/userProvider";
+import { useLoading } from "../../provider/loadingProvider";
 
-import { getAcademicYearMatch } from "../../controller/firebase/get/getAcademicYearMatch";
-import { getEvents } from "../../controller/firebase/get/getEvents";
-import { getMembers } from "../../controller/firebase/get/getCoreMembers";
+import { getAcademicYearMatch } from "../../lib/firebase/get/getAcademicYearMatch";
+import { getEvents } from "../../lib/firebase/get/getEvents";
+import { getMembers } from "../../lib/firebase/get/getCoreMembers";
 
 import {
 	getActiveEventsCount,
 	getActivePhotosCount,
 	getActiveUsersCount,
-} from "../../controller/firebase/get/getCount";
+} from "../../lib/firebase/get/getCount";
 
 function DashboardPage() {
 	const location = useLocation();
@@ -51,7 +51,7 @@ function DashboardPage() {
 				setEvent,
 				setLoading,
 				triggerAlert,
-				5
+				5,
 			);
 
 			getMembers(ay_id.id, null, null, setMember, setLoading, triggerAlert, 5);
@@ -64,7 +64,7 @@ function DashboardPage() {
 				userDetails.us_ayID,
 				setLoading,
 				triggerAlert,
-				navigate
+				navigate,
 			);
 		}
 	};
@@ -120,7 +120,7 @@ function DashboardPage() {
 														<h4>{ev.ev_name}</h4>
 														<p>
 															{new Date(
-																ev.ev_date.seconds * 1000
+																ev.ev_date.seconds * 1000,
 															).toLocaleDateString("en-US", {
 																month: "short",
 																day: "numeric",
@@ -167,7 +167,7 @@ function DashboardPage() {
 														<p>
 															{mem.us_create_timestamp
 																? new Date(
-																		mem.us_create_timestamp.seconds * 1000
+																		mem.us_create_timestamp.seconds * 1000,
 																  ).toLocaleDateString("en-US", {
 																		month: "short",
 																		day: "numeric",

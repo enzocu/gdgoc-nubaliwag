@@ -1,23 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import "../../../style/adminStyle/events.css";
-import banner from "../../../assets/banner.png";
-import profileIcon from "../../../assets/profileicon.jpg";
+const banner = "/assets/images/banner.png";
+const profileIcon = "/assets/images/profileicon.jpg";
 
 import HeaderFormAdmin from "../../components/headerFormAdmin";
 import EventStatus from "../../components/boostrap/eventstatModal";
 
-import { useAlert } from "../../context/alertProvider";
-import { useUser } from "../../context/userContext";
-import { useLoading } from "../../context/loadingProvider";
+import { useAlert } from "../../../provider/alertProvider";
+import { useUser } from "../../../provider/userProvider";
+import { useLoading } from "../../../provider/loadingProvider";
 
-import { openModal } from "../../../controller/customAction/showcloseModal";
-import {
-	formatDate,
-	formatTime,
-} from "../../../controller/customAction/toTimestamp";
+import { openModal } from "../../../lib/helper/showcloseModal";
+import { formatDate, formatTime } from "../../../lib/helper/toTimestamp";
 
-import { getEventDetails } from "../../../controller/firebase/get/getEventdetails";
+import { getEventDetails } from "../../../lib/firebase/get/getEventdetails";
 
 const defaultEvent = {
 	ev_name: "Event Title",
@@ -60,7 +57,7 @@ function EventsDetails() {
 				triggerAlert,
 				setLoading,
 				false,
-				navigate
+				navigate,
 			);
 
 			return () => unsubscribe();

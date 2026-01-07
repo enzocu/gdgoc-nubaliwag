@@ -52,16 +52,20 @@
 
 .content-page.events .event-status div,
 .content-details.events .event-header div {
-	padding: 3px 14px;
+	padding: 5px 14px;
 	border-radius: 50px;
 	display: inline-block;
-	font-size: 12px;
+	font-size: 11px;
 	white-space: nowrap;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .content-page.events .event-type,
 .content-details.events .event-type {
-	background-color: #525252;
+	background-color: #ea4335;
 	color: #ffffff;
 }
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "../../style/userStyle/home.css";
-import aboutUsImg from "../../assets/iconlogo.png";
+const aboutUsImg = "/assets/images/iconlogo.png";
 
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
@@ -11,19 +11,19 @@ import { FaPeopleCarryBox } from "react-icons/fa6";
 
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useAlert } from "../context/alertProvider";
-import { useAcadYear } from "../context/acadyearContext";
-import { useLoading } from "../context/loadingProvider";
+import { useAlert } from "../../provider/alertProvider";
+import { useAcadYear } from "../../provider/acadyearProvider";
+import { useLoading } from "../../provider/loadingProvider";
 
 import {
 	goToSlide,
 	handleLoadMore,
 	nextSlide,
 	prevSlide,
-} from "../../controller/customAction/slideHandleChange";
+} from "../../lib/helper/slideHandleChange";
 
-import { getEvents } from "../../controller/firebase/get/getEvents";
-import getPhotos from "../../controller/firebase/get/getPhotos";
+import { getEvents } from "../../lib/firebase/get/getEvents";
+import getPhotos from "../../lib/firebase/get/getPhotos";
 import Footer from "../components/footer";
 
 function HomePage() {
@@ -51,7 +51,7 @@ function HomePage() {
 				setEvent,
 				setLoading,
 				triggerAlert,
-				5
+				5,
 			);
 
 			getPhotos(
@@ -60,7 +60,7 @@ function HomePage() {
 				setPhoto,
 				setLoading,
 				triggerAlert,
-				loadGallery
+				loadGallery,
 			);
 		}
 	}, [loading, acadYear, loadGallery]);
@@ -196,7 +196,7 @@ function HomePage() {
 														<h3>{event.ev_name}</h3>
 														<p className="event-date">
 															{new Date(
-																event.ev_date.seconds * 1000
+																event.ev_date.seconds * 1000,
 															).toLocaleDateString(undefined, {
 																year: "numeric",
 																month: "long",
@@ -213,7 +213,7 @@ function HomePage() {
 														<a
 															onClick={() =>
 																navigate(
-																	`/user/events/eventsdetails?id=${event.id}`
+																	`/user/events/eventsdetails?id=${event.id}`,
 																)
 															}
 															className="learn-more-link"
@@ -278,7 +278,7 @@ function HomePage() {
 												<p>
 													{photos[currentSlide]?.ph_date
 														? new Date(
-																photos[currentSlide]?.ph_date.seconds * 1000
+																photos[currentSlide]?.ph_date.seconds * 1000,
 														  ).toLocaleDateString(undefined, {
 																year: "numeric",
 																month: "short",

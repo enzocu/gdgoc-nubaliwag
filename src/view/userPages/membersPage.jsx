@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import "../../style/userStyle/member.css";
 import { useLocation } from "react-router-dom";
-import profileIcon from "../../assets/profileicon.jpg";
+const profileIcon = "/assets/images/profileicon.jpg";
 
 import Footer from "../components/footer";
 import UrlUpload from "../components/boostrap/urlModal";
 import ProfileDetails from "../components/boostrap/profileModal";
 
-import { useAlert } from "../context/alertProvider";
-import { useAcadYear } from "../context/acadyearContext";
-import { useLoading } from "../context/loadingProvider";
+import { useAlert } from "../../provider/alertProvider";
+import { useAcadYear } from "../../provider/acadyearProvider";
+import { useLoading } from "../../provider/loadingProvider";
 
-import { openModal } from "../../controller/customAction/showcloseModal";
-import { getMembersRoles } from "../../controller/firebase/get/getUserRoles";
+import { openModal } from "../../lib/helper/showcloseModal";
+import { getMembersRoles } from "../../lib/firebase/get/getUserRoles";
 
 function MembersPage() {
 	const location = useLocation();
@@ -46,7 +46,7 @@ function MembersPage() {
 					{renderSingleRoleSection(
 						"Organization Lead",
 						member,
-						setProfileDetails
+						setProfileDetails,
 					)}
 					{renderSingleRoleSection("Adviser", member, setProfileDetails)}
 
@@ -54,31 +54,31 @@ function MembersPage() {
 						"Executive Board",
 						"Department leaders who coordinate and oversee specific areas of the organization",
 						member["Executive Board"],
-						setProfileDetails
+						setProfileDetails,
 					)}
 					{renderMembers(
 						"Core Leads",
 						"Department leaders who coordinate and oversee specific areas of the organization",
 						member["Core Lead"],
-						setProfileDetails
+						setProfileDetails,
 					)}
 					{renderMembers(
 						"Operations Department",
 						"Responsible for event planning, communications, and member engagement",
 						member["Operations Department"],
-						setProfileDetails
+						setProfileDetails,
 					)}
 					{renderMembers(
 						"Finance Department",
 						"Manages budgeting and financial planning for the organization.",
 						member["Finance Department"],
-						setProfileDetails
+						setProfileDetails,
 					)}
 					{renderMembers(
 						"Technology Department",
 						"Leads technical workshops, develops projects, and provides technical expertise.",
 						member["Technology Department"],
-						setProfileDetails
+						setProfileDetails,
 					)}
 				</main>
 				<Footer />
@@ -148,7 +148,7 @@ const renderMembers = (title, description, membersList, setProfileDetails) => {
 const renderSingleRoleSection = (
 	roleTitle = "Organization Lead",
 	member,
-	setProfileDetails
+	setProfileDetails,
 ) => {
 	const roleData = member[roleTitle]?.[0];
 	if (!roleData) return null;

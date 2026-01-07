@@ -15,8 +15,8 @@ import {
 	deleteObject,
 } from "firebase/storage";
 import { db } from "../../../server/firebaseConfig";
-import { toTimestamp } from "../../customAction/toTimestamp";
-import { sendOrganizerEmail } from "../../customAction/sendEmail";
+import { toTimestamp } from "../../helper/toTimestamp";
+import { sendOrganizerEmail } from "../../helper/sendEmail";
 
 export const updateEvent = async (
 	eventId,
@@ -26,7 +26,7 @@ export const updateEvent = async (
 	gallery,
 	triggerAlert,
 	setBtnloading,
-	navigate
+	navigate,
 ) => {
 	try {
 		setBtnloading(true);
@@ -81,7 +81,7 @@ export const updateEvent = async (
 						sp.sp_photoURL.includes("firebase")
 					) {
 						const imgPath = decodeURIComponent(
-							sp.sp_photoURL.split("/o/")[1].split("?")[0]
+							sp.sp_photoURL.split("/o/")[1].split("?")[0],
 						);
 						const imgRef = ref(storage, imgPath);
 						await deleteObject(imgRef).catch(() => {});
@@ -128,7 +128,7 @@ export const updateEvent = async (
 						ga.ga_photoURL.includes("firebase")
 					) {
 						const imgPath = decodeURIComponent(
-							ga.ga_photoURL.split("/o/")[1].split("?")[0]
+							ga.ga_photoURL.split("/o/")[1].split("?")[0],
 						);
 						const imgRef = ref(storage, imgPath);
 						await deleteObject(imgRef).catch(() => {});
@@ -166,7 +166,7 @@ export const updateEvent = async (
 					event.ev_location,
 					event.ev_overview,
 					eventId,
-					triggerAlert
+					triggerAlert,
 				);
 			}
 		}

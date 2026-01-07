@@ -5,20 +5,19 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "../../style/adminStyle/photos.css";
 
 import { MdAdd } from "react-icons/md";
-import Lottie from "lottie-react";
-import noevent from "../../assets/noevent.json";
+import LottieLoader from "../components/lottieLoader";
 
 import SideBar from "../components/sideBar";
 import HeaderPageAdmin from "../components/headerPageAdmin";
 
-import { useUser } from "../context/userContext";
-import { useLoading } from "../context/loadingProvider";
-import { useAlert } from "../context/alertProvider";
+import { useUser } from "../../provider/userProvider";
+import { useLoading } from "../../provider/loadingProvider";
+import { useAlert } from "../../provider/alertProvider";
 
-import { toggleDropdown } from "../../controller/customAction/showcloseModal";
+import { toggleDropdown } from "../../lib/helper/showcloseModal";
 
-import { getAcademicYears } from "../../controller/firebase/get/getAcademicYears";
-import getPhotos from "../../controller/firebase/get/getPhotos";
+import { getAcademicYears } from "../../lib/firebase/get/getAcademicYears";
+import getPhotos from "../../lib/firebase/get/getPhotos";
 
 function PhotosPage() {
 	const location = useLocation();
@@ -42,7 +41,7 @@ function PhotosPage() {
 				setPhoto,
 				setLoading,
 				triggerAlert,
-				100
+				100,
 			);
 		}
 	}, [userLoading, search, acadyear]);
@@ -104,7 +103,7 @@ function PhotosPage() {
 
 						{!appLoading && photo.length === 0 ? (
 							<div className="no-event-lottie-container">
-								<Lottie animationData={noevent} loop={true} />
+								<LottieLoader path="/assets/json/noevent.json" loop={true} />
 							</div>
 						) : (
 							<section className="photos-list">
@@ -122,7 +121,7 @@ function PhotosPage() {
 												<p>
 													{ph.ph_date
 														? new Date(
-																ph.ph_date.seconds * 1000
+																ph.ph_date.seconds * 1000,
 														  ).toLocaleDateString(undefined, {
 																year: "numeric",
 																month: "short",

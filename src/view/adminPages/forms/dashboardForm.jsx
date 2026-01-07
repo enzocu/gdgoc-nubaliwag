@@ -6,16 +6,16 @@ import { VscLinkExternal } from "react-icons/vsc";
 import HeaderFormAdmin from "../../../view/components/headerFormAdmin";
 import UrlUpload from "../../components/boostrap/urlModal";
 
-import { useAlert } from "../../context/alertProvider";
-import { useUser } from "../../context/userContext";
-import { useLoading } from "../../context/loadingProvider";
+import { useAlert } from "../../../provider/alertProvider";
+import { useUser } from "../../../provider/userProvider";
+import { useLoading } from "../../../provider/loadingProvider";
 
-import { handleChange } from "../../../controller/customAction/handleChange";
-import { openModal } from "../../../controller/customAction/showcloseModal";
+import { handleChange } from "../../../lib/helper/handleChange";
+import { openModal } from "../../../lib/helper/showcloseModal";
 
-import { insertAcademicYear } from "../../../controller/firebase/insert/insertAcademicYear";
-import { getAcademicYearDetails } from "../../../controller/firebase/get/getAcademicYearDetails";
-import { updateAcademicYear } from "../../../controller/firebase/update/updateAcademicYear";
+import { insertAcademicYear } from "../../../lib/firebase/insert/insertAcademicYear";
+import { getAcademicYearDetails } from "../../../lib/firebase/get/getAcademicYearDetails";
+import { updateAcademicYear } from "../../../lib/firebase/update/updateAcademicYear";
 
 const defaultDashboard = {
 	ay_bannerURL:
@@ -58,7 +58,7 @@ function DashboardForm() {
 					userDetails.uid,
 					acadyear,
 					setBtnloading,
-					triggerAlert
+					triggerAlert,
 				);
 			}
 		} else if (action == "edit") {
@@ -67,7 +67,7 @@ function DashboardForm() {
 					userDetails.us_ayID,
 					acadyear,
 					setBtnloading,
-					triggerAlert
+					triggerAlert,
 				);
 			}
 		}
@@ -89,7 +89,7 @@ function DashboardForm() {
 				userDetails.us_ayID,
 				setAcadyear,
 				setLoading,
-				triggerAlert
+				triggerAlert,
 			);
 
 			return () => unsubscribe();

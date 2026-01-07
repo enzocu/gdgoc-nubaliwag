@@ -1,9 +1,9 @@
 import React, { use, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../style/bootstrapStyle/login.css";
-import logo from "../../../assets/navlogo.png";
-import { useAlert } from "../../context/alertProvider";
-import { handleLogin } from "../../../controller/firebase/handleLogin";
+const logo = "/assets/images/navlogo.png";
+import { useAlert } from "../../../provider/alertProvider";
+import { handleLogin } from "../../../lib/firebase/handleLogin";
 
 const LoginModal = () => {
 	const navigate = useNavigate();

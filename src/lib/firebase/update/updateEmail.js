@@ -1,7 +1,7 @@
 import { getAuth, updateEmail, sendEmailVerification } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../../server/firebaseConfig";
-import { closeModal } from "../../customAction/showcloseModal";
+import { closeModal } from "../../helper/showcloseModal";
 
 export const updateUserEmail = async (newEmail, triggerAlert, setLoading) => {
 	try {
@@ -16,7 +16,7 @@ export const updateUserEmail = async (newEmail, triggerAlert, setLoading) => {
 		if (!user.emailVerified) {
 			await sendEmailVerification(user);
 			throw new Error(
-				"Your current email is not verified. Verification email has been sent. Please verify your current email before changing to a new one."
+				"Your current email is not verified. Verification email has been sent. Please verify your current email before changing to a new one.",
 			);
 		}
 
@@ -32,7 +32,7 @@ export const updateUserEmail = async (newEmail, triggerAlert, setLoading) => {
 
 		triggerAlert(
 			"success",
-			`Email updated successfully. A verification email has been sent to ${newEmail}. Please verify your new email.`
+			`Email updated successfully. A verification email has been sent to ${newEmail}. Please verify your new email.`,
 		);
 	} catch (error) {
 		console.error("Error updating user email:", error);

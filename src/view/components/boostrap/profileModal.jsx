@@ -1,7 +1,7 @@
 import React from "react";
-import logo from "../../../assets/navlogo.png";
+const logo = "/assets/images/navlogo.png";
 import "../../../style/bootstrapStyle/width.css";
-import profileIcon from "../../../assets/profileicon.jpg";
+const profileIcon = "/assets/images/profileicon.jpg";
 
 const ProfileDetails = ({ profileDetails = null }) => {
 	if (!profileDetails || !profileDetails.us_studentID) return null;

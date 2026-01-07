@@ -1,24 +1,23 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import "../../style/adminStyle/members.css";
-import profileIcon from "../../assets/profileicon.jpg";
+const profileIcon = "/assets/images/profileicon.jpg";
 
 import { MdAdd } from "react-icons/md";
 import { BiSort } from "react-icons/bi";
-import Lottie from "lottie-react";
-import noevent from "../../assets/noevent.json";
+import LottieLoader from "../components/lottieLoader";
 
 import SideBar from "../../view/components/sideBar";
 import HeaderPageAdmin from "../../view/components/headerPageAdmin";
 
-import { useUser } from "../context/userContext";
-import { useLoading } from "../context/loadingProvider";
-import { useAlert } from "../context/alertProvider";
+import { useUser } from "../../provider/userProvider";
+import { useLoading } from "../../provider/loadingProvider";
+import { useAlert } from "../../provider/alertProvider";
 
-import { toggleDropdown } from "../../controller/customAction/showcloseModal";
+import { toggleDropdown } from "../../lib/helper/showcloseModal";
 
-import { getMembers } from "../../controller/firebase/get/getCoreMembers";
-import { getAcademicYears } from "../../controller/firebase/get/getAcademicYears";
+import { getMembers } from "../../lib/firebase/get/getCoreMembers";
+import { getAcademicYears } from "../../lib/firebase/get/getAcademicYears";
 
 function MembersPage() {
 	const location = useLocation();
@@ -43,7 +42,7 @@ function MembersPage() {
 				setMember,
 				setLoading,
 				triggerAlert,
-				100
+				100,
 			);
 		}
 	}, [userLoading, search, roType, acadyear]);
@@ -132,7 +131,7 @@ function MembersPage() {
 													key={item.id || index}
 													onClick={() =>
 														navigate(
-															`/admin/members/membersform?action=edit&id=${item.id}`
+															`/admin/members/membersform?action=edit&id=${item.id}`,
 														)
 													}
 												>
@@ -179,7 +178,7 @@ function MembersPage() {
 							</section>
 						) : !appLoading && member.length === 0 ? (
 							<div className="no-event-lottie-container">
-								<Lottie animationData={noevent} loop={true} />
+								<LottieLoader path="/assets/json/noevent.json" loop={true} />
 							</div>
 						) : null}
 					</div>

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import "../../../style/userStyle/eventsprojects.css";
-import photosImg from "../../../assets/banner.png";
-import profileIcon from "../../../assets/profileicon.jpg";
+const photosImg = "/assets/images/banner.png";
+const profileIcon = "/assets/images/profileicon.jpg";
 
 import { GiPartyFlags } from "react-icons/gi";
 import { IoLocationOutline } from "react-icons/io5";
@@ -11,22 +11,19 @@ import { MdAccessTime } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 
-import { useAlert } from "../../context/alertProvider";
-import { useAcadYear } from "../../context/acadyearContext";
-import { useLoading } from "../../context/loadingProvider";
+import { useAlert } from "../../../provider/alertProvider";
+import { useAcadYear } from "../../../provider/acadyearProvider";
+import { useLoading } from "../../../provider/loadingProvider";
 
 import {
 	goToSlide,
 	handleLoadMore,
 	nextSlide,
 	prevSlide,
-} from "../../../controller/customAction/slideHandleChange";
+} from "../../../lib/helper/slideHandleChange";
 import Footer from "../../components/footer";
-import { getEventDetails } from "../../../controller/firebase/get/getEventdetails";
-import {
-	formatDate,
-	formatTime,
-} from "../../../controller/customAction/toTimestamp";
+import { getEventDetails } from "../../../lib/firebase/get/getEventdetails";
+import { formatDate, formatTime } from "../../../lib/helper/toTimestamp";
 import SpeakerDetails from "../../components/boostrap/speakerprofileModal";
 
 const defaultEvent = {
@@ -73,7 +70,7 @@ function EventsDetailsPage() {
 				triggerAlert,
 				setLoading,
 				false,
-				navigate
+				navigate,
 			);
 
 			return () => unsubscribe();

@@ -1,14 +1,14 @@
 import { NavLink, useLocation } from "react-router-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import logo from "../../assets/navlogo.png";
+const logo = "/assets/images/navlogo.png";
 import { IoIosMenu } from "react-icons/io";
 import { FiSun, FiMoon } from "react-icons/fi";
 
 import {
 	openModal,
 	toggleNavbarCollapse,
-} from "../../controller/customAction/showcloseModal";
-import useTheme from "../../controller/customAction/useTheme";
+} from "../../lib/helper/showcloseModal";
+import useTheme from "../../lib/helper/useTheme";
 
 function HeaderPage() {
 	const location = useLocation();

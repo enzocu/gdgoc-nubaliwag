@@ -23,15 +23,18 @@ const TopAlertProvider = ({ children }) => {
 		<AlertContext.Provider value={{ triggerAlert }}>
 			{show && (
 				<div
-					className={`alert alert-${alert.type} alert-dismissible fade show fixed-top `}
+					className={`custom-alert alert alert-${alert.type} alert-dismissible fade show`}
 					role="alert"
 				>
-					{alert.message}
-					<button
-						type="button"
-						className="btn-close"
-						onClick={() => setShow(false)}
-					></button>
+					<div className="d-flex align-items-center">
+						<div className="alert-content">{alert.message}</div>
+						<button
+							type="button"
+							className="btn-close"
+							onClick={() => setShow(false)}
+							aria-label="Close"
+						></button>
+					</div>
 				</div>
 			)}
 			{children}

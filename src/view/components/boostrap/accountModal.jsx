@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import logo from "../../../assets/navlogo.png";
-import { useAlert } from "../../context/alertProvider";
+const logo = "/assets/images/navlogo.png";
+import { useAlert } from "../../../provider/alertProvider";
 import "../../../style/bootstrapStyle/width.css";
 
-import { resetUserPassword } from "../../../controller/firebase/update/resetPassword";
-import { updateUserEmail } from "../../../controller/firebase/update/updateEmail";
+import { resetUserPassword } from "../../../lib/firebase/update/resetPassword";
+import { updateUserEmail } from "../../../lib/firebase/update/updateEmail";
 
 const AccountSettings = () => {
 	const { triggerAlert } = useAlert();

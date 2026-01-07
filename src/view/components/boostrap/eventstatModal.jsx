@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import logo from "../../../assets/navlogo.png";
-import { useAlert } from "../../context/alertProvider";
-import { updateEventStatus } from "../../../controller/firebase/update/updateEventstatus";
+const logo = "/assets/images/navlogo.png";
+import { useAlert } from "../../../provider/alertProvider";
+import { updateEventStatus } from "../../../lib/firebase/update/updateEventstatus";
 import "../../../style/bootstrapStyle/width.css";
 
 const EventStatus = ({ eventId }) => {

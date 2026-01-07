@@ -1,9 +1,8 @@
 import { useState } from "react";
 import "../../style/userStyle/eventsprojects.css";
-import project from "../../assets/project.png";
+const project = "/assets/images/project.png";
 
-import Lottie from "lottie-react";
-import maintenance from "../../assets/underMaintenance.json";
+import LottieLoader from "../components/lottieLoader";
 
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { IoTimeOutline } from "react-icons/io5";
@@ -30,7 +29,10 @@ function ProjectsPage() {
 					</section>
 					<section className="gdg-container">
 						<div className="maintenance-lottie-container">
-							<Lottie animationData={maintenance} loop={true} />
+							<LottieLoader
+								path="/assets/json/underMaintenance.json"
+								loop={true}
+							/>
 						</div>
 					</section>
 					{/* <section className="gdg-container">

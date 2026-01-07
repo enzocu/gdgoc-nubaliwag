@@ -3,24 +3,20 @@ import { NavLink, useLocation } from "react-router-dom";
 import "../../style/adminStyle/events.css";
 
 import { MdAdd } from "react-icons/md";
-import Lottie from "lottie-react";
-import noevent from "../../assets/noevent.json";
+import LottieLoader from "../components/lottieLoader";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import SideBar from "../components/sideBar";
 import HeaderPageAdmin from "../components/headerPageAdmin";
 
-import { useUser } from "../context/userContext";
-import { useLoading } from "../context/loadingProvider";
-import { useAlert } from "../context/alertProvider";
+import { useUser } from "../../provider/userProvider";
+import { useLoading } from "../../provider/loadingProvider";
+import { useAlert } from "../../provider/alertProvider";
 
-import { toggleDropdown } from "../../controller/customAction/showcloseModal";
+import { toggleDropdown } from "../../lib/helper/showcloseModal";
 
-import {
-	getEvents,
-	getEventCount,
-} from "../../controller/firebase/get/getEvents";
-import { getAcademicYears } from "../../controller/firebase/get/getAcademicYears";
+import { getEvents, getEventCount } from "../../lib/firebase/get/getEvents";
+import { getAcademicYears } from "../../lib/firebase/get/getAcademicYears";
 
 function EventsPage() {
 	const location = useLocation();
@@ -58,7 +54,7 @@ function EventsPage() {
 				pageLimit,
 				pageCursors,
 				setPageCursors,
-				currentPage
+				currentPage,
 			);
 		}
 	}, [userLoading, search, acadyear, evStatus, evType, nextPage]);
@@ -70,7 +66,7 @@ function EventsPage() {
 				evStatus,
 				evType,
 				pageLimit,
-				setCtrPage
+				setCtrPage,
 			);
 		}
 	}, [userLoading, acadyear, evStatus, evType]);
@@ -182,7 +178,7 @@ function EventsPage() {
 
 						{!appLoading && event.length === 0 ? (
 							<div className="no-event-lottie-container">
-								<Lottie animationData={noevent} loop={true} />
+								<LottieLoader path="/assets/json/noevent.json" loop={true} />
 							</div>
 						) : (
 							<>
@@ -212,7 +208,7 @@ function EventsPage() {
 													<p>
 														{ev.ev_date
 															? new Date(
-																	ev.ev_date.seconds * 1000
+																	ev.ev_date.seconds * 1000,
 															  ).toLocaleDateString(undefined, {
 																	year: "numeric",
 																	month: "short",
@@ -261,7 +257,7 @@ function EventsPage() {
 												className="page-btn"
 												onClick={() => {
 													setCurrentPage((prev) =>
-														Math.min(prev + 1, ctrPages)
+														Math.min(prev + 1, ctrPages),
 													);
 													setNextPage(nextPage + 1);
 												}}

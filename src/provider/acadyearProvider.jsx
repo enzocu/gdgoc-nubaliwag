@@ -1,9 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { db } from "../../server/firebaseConfig";
+import { db } from "../server/firebaseConfig";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 
-import Lottie from "lottie-react";
-import loadingAcadYear from "../../assets/googleLoading.json";
+import LottieLoader from "../view/components/lottieLoader";
 
 const AcadYearContext = createContext();
 
@@ -30,7 +29,7 @@ export const AcadYearProvider = ({ children }) => {
 			(error) => {
 				console.error("Error getting realtime academic year:", error);
 				setLoading(false);
-			}
+			},
 		);
 
 		return () => unsubscribe();
@@ -40,8 +39,8 @@ export const AcadYearProvider = ({ children }) => {
 		<AcadYearContext.Provider value={{ acadYear, loading }}>
 			{loading ? (
 				<div className="authloading-container">
-					<Lottie
-						animationData={loadingAcadYear}
+					<LottieLoader
+						path="/assets/json/googleLoading.json"
 						loop={true}
 						className="auth"
 					/>

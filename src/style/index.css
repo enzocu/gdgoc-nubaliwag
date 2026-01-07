@@ -53,20 +53,20 @@ html {
 }
 
 [data-theme="dark"] {
-	--bg-color: #202123;
-	--sec-bg-color: #252527;
+	--bg-color: #050505;
+	--sec-bg-color: #0a0a0a;
 	--thi-bg-color: rgba(25, 30, 112, 0.1);
 
 	--text-color: #ffffff;
 	--sec-text-color: #9ca3af;
 
 	--bg-button-color: #4285f4;
-	--border-color: #383838;
+	--border-color: #222222;
 
-	--bg-text-field: #252628;
+	--bg-text-field: #121212;
 
-	--color-shadow: rgba(114, 110, 110, 0.1);
-	--img-bg-color: #232323;
+	--color-shadow: rgba(0, 0, 0, 0.5);
+	--img-bg-color: #0f0f0f;
 }
 
 a {
@@ -459,5 +459,62 @@ body {
 	.footer .developer-list,
 	.footer .contact-list {
 		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
+/* Custom Alert Styles */
+.custom-alert {
+	position: fixed !important;
+	top: 5px;
+	right: 20px;
+	z-index: 10000;
+	min-width: 300px;
+	max-width: 450px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	border: none;
+	border-radius: 8px;
+	animation: slideInRight 0.3s ease-out forwards;
+}
+
+.custom-alert.alert-success {
+	background-color: #2ecc71;
+	color: #ffffff;
+}
+
+.custom-alert.alert-success .btn-close,
+.custom-alert.alert-danger .btn-close,
+.custom-alert.alert-warning .btn-close,
+.custom-alert.alert-info .btn-close {
+	filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.custom-alert.alert-danger {
+	background-color: #e74c3c;
+	color: #ffffff;
+}
+
+.custom-alert.alert-warning {
+	background-color: #f39c12;
+	color: #ffffff;
+}
+
+.custom-alert.alert-info {
+	background-color: #3498db;
+	color: #ffffff;
+}
+
+.custom-alert .alert-content {
+	padding-right: 20px;
+	font-weight: 500;
+}
+
+@keyframes slideInRight {
+	from {
+		transform: translateX(100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
 	}
 }

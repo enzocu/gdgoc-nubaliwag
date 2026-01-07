@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import logo from "../../../assets/navlogo.png";
-import { useAlert } from "../../context/alertProvider";
+const logo = "/assets/images/navlogo.png";
+import { useAlert } from "../../../provider/alertProvider";
 import "../../../style/bootstrapStyle/width.css";
-import { closeModal } from "../../../controller/customAction/showcloseModal";
+import { closeModal } from "../../../lib/helper/showcloseModal";
 
 const UrlUpload = ({ name = null, state = null, setState = null }) => {
 	const { triggerAlert } = useAlert();

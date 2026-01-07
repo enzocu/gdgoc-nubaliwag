@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
-import { useUser } from "../context/userContext";
+import { useUser } from "./userProvider";
 
 const ProtectedRoute = ({ children }) => {
 	const { user, loading } = useUser();
@@ -18,7 +18,6 @@ const ProtectedRoute = ({ children }) => {
 		"/user/events",
 		"/user/projects",
 		"/user/contact",
-
 		"/user/events/eventsdetails",
 	];
 

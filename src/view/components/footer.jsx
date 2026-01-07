@@ -1,4 +1,4 @@
-import logo from "../../assets/navlogo.png";
+const logo = "/assets/images/navlogo.png";
 
 import { IoLocationOutline } from "react-icons/io5";
 import { MdOutlineMailOutline } from "react-icons/md";
@@ -21,7 +21,7 @@ const Footer = () => {
 								onClick={() =>
 									window.open(
 										"https://www.facebook.com/GDGoCNUBaliwag",
-										"_blank"
+										"_blank",
 									)
 								}
 							>
