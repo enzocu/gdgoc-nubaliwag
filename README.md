@@ -2,6 +2,10 @@
 
 This project is a React application built with Vite, utilizing Firebase for backend services (Authentication, Firestore, Storage). It features a public-facing user interface and a protected admin dashboard for managing events, members, and photos.
 
+## About
+
+Welcome to the official repository for the **GDG on Campus NU Baliwag** website. This platform acts as a central hub for our community, showcasing our events, core team members, and student projects. It is designed to foster connection and collaboration among tech enthusiasts at National University Baliwag.
+
 ## Project Structure
 
 ```

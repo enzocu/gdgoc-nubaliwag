@@ -15,6 +15,7 @@ import { useAlert } from "../../../provider/alertProvider";
 import { useAcadYear } from "../../../provider/acadyearProvider";
 import { useLoading } from "../../../provider/loadingProvider";
 
+import ImageLoader from "../../components/imageLoader";
 import {
 	goToSlide,
 	handleLoadMore,
@@ -84,10 +85,15 @@ function EventsDetailsPage() {
 				<main className="event-main">
 					<section className="event-hero-section">
 						<div className="event-hero-container">
-							<img
+							<ImageLoader
 								src={event.ev_photoURL || photosImg}
 								alt="Event"
 								className="event-hero-image"
+								style={{
+									borderRadius: "10px",
+									height: "100%",
+									width: "100%",
+								}}
 							/>
 							{event.ev_status === "Upcoming" && (
 								<button

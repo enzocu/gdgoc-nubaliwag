@@ -6,6 +6,7 @@ import "../../style/adminStyle/photos.css";
 
 import { MdAdd } from "react-icons/md";
 import LottieLoader from "../components/lottieLoader";
+import ImageLoader from "../components/imageLoader";
 
 import SideBar from "../components/sideBar";
 import HeaderPageAdmin from "../components/headerPageAdmin";
@@ -114,7 +115,16 @@ function PhotosPage() {
 									>
 										<div className="photos-card">
 											<div className="photos-photo">
-												<img src={ph.ph_photoURL} alt={ph.ph_name || "Photo"} />
+												<ImageLoader
+													src={ph.ph_photoURL}
+													alt={ph.ph_name || "Photo"}
+													style={{
+														height: "100%",
+														width: "100%",
+														borderTopLeftRadius: "10px",
+														borderTopRightRadius: "10px",
+													}}
+												/>
 											</div>
 											<div className="details">
 												<h4>{ph.ph_name || "Untitled"}</h4>

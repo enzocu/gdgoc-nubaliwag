@@ -4,6 +4,7 @@ import "../../style/adminStyle/events.css";
 
 import { MdAdd } from "react-icons/md";
 import LottieLoader from "../components/lottieLoader";
+import ImageLoader from "../components/imageLoader";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import SideBar from "../components/sideBar";
@@ -190,9 +191,15 @@ function EventsPage() {
 										>
 											<div className="event-card">
 												<div className="event-photo">
-													<img
+													<ImageLoader
 														src={ev.ev_photoURL}
 														alt={ev.ev_name || "Event Image"}
+														style={{
+															height: "150px",
+															width: "100%",
+															borderTopLeftRadius: "10px",
+															borderTopRightRadius: "10px",
+														}}
 													/>
 												</div>
 												<div className="event-status">

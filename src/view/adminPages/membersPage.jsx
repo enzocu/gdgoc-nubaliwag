@@ -6,6 +6,7 @@ const profileIcon = "/assets/images/profileicon.jpg";
 import { MdAdd } from "react-icons/md";
 import { BiSort } from "react-icons/bi";
 import LottieLoader from "../components/lottieLoader";
+import ImageLoader from "../components/imageLoader";
 
 import SideBar from "../../view/components/sideBar";
 import HeaderPageAdmin from "../../view/components/headerPageAdmin";
@@ -137,9 +138,14 @@ function MembersPage() {
 												>
 													<td>
 														<div className="profile-pic">
-															<img
+															<ImageLoader
 																src={item.us_photoURL || profileIcon}
 																alt="Profile"
+																style={{
+																	width: "100%",
+																	height: "100%",
+																	borderRadius: "50%",
+																}}
 															/>
 														</div>
 													</td>

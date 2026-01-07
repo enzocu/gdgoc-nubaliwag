@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "../../style/userStyle/eventsprojects.css";
 
 import LottieLoader from "../components/lottieLoader";
+import ImageLoader from "../components/imageLoader";
 
 import { IoCalendarClearOutline } from "react-icons/io5";
 import { IoTimeOutline } from "react-icons/io5";
@@ -123,9 +124,15 @@ function EventsPage() {
 												<span className="gdg-event-type">
 													{ev.ev_type || "N/A"}
 												</span>
-												<img
+												<ImageLoader
 													src={ev.ev_photoURL || "/placeholder.svg"}
 													alt={ev.ev_name || "Event Image"}
+													style={{
+														height: "100%",
+														width: "100%",
+														borderTopLeftRadius: "10px",
+														borderTopRightRadius: "10px",
+													}}
 												/>
 											</div>
 											<div className="gdg-event-content">

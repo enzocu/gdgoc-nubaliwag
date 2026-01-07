@@ -3,6 +3,7 @@ import "../../style/userStyle/member.css";
 import { useLocation } from "react-router-dom";
 const profileIcon = "/assets/images/profileicon.jpg";
 
+import ImageLoader from "../components/imageLoader";
 import Footer from "../components/footer";
 import UrlUpload from "../components/boostrap/urlModal";
 import ProfileDetails from "../components/boostrap/profileModal";
@@ -112,7 +113,7 @@ const renderMembers = (title, description, membersList, setProfileDetails) => {
 
 						return (
 							<div className="core-member" key={index}>
-								<img
+								<ImageLoader
 									src={member.us_photoURL || profileIcon}
 									alt={fullName || "Profile"}
 									className="core-photo"
@@ -130,7 +131,8 @@ const renderMembers = (title, description, membersList, setProfileDetails) => {
 										onClick={(e) => {
 											e.preventDefault();
 											setProfileDetails(member);
-											openModal("profileModal");
+											// Delay opening modal slightly to allow state update
+											setTimeout(() => openModal("profileModal"), 0);
 										}}
 									>
 										View Profile
@@ -178,13 +180,14 @@ const renderSingleRoleSection = (
 							onClick={(e) => {
 								e.preventDefault();
 								setProfileDetails(roleData);
-								openModal("profileModal");
+								// Delay opening modal slightly to allow state update
+								setTimeout(() => openModal("profileModal"), 0);
 							}}
 						>
 							View Profile
 						</a>
 					</div>
-					<img
+					<ImageLoader
 						src={roleData.us_photoURL || profileIcon}
 						alt={`${roleTitle.toLowerCase().replace(/\s/g, "-")}-photo`}
 						className="org-lead-photo"
